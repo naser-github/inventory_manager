@@ -1,0 +1,10 @@
+/*Begin::toastr*/
+.toastr.toastr-success {
+    background-color: #228B22;
+}
+
+.toastr.toastr-error {
+    background-color: #DC143C;
+}
+
+/*End::toastr*/
