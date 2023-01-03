@@ -6,10 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Setting\Vendor\VendorStoreRequest;
 use App\Http\Requests\Setting\Vendor\VendorUpdateRequest;
 use App\Http\Services\setting\VendorService;
-use App\Models\Vendor;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class VendorController extends Controller
@@ -20,11 +18,6 @@ class VendorController extends Controller
         $vendors = $vendorService->index();
 
         return view('pages.settings.vendor.index', compact('vendors'));
-    }
-
-    public function create()
-    {
-        //
     }
 
     /**
@@ -42,15 +35,12 @@ class VendorController extends Controller
         return back();
     }
 
-
-    public function show($id)
+    public function edit(Request $request, VendorService $vendorService)
     {
-        //
-    }
+        $vendor = $vendorService->findById($request->id);
 
-    public function edit($id)
-    {
-        //
+        if ($vendor) return view('pages.settings.vendor.edit', compact('vendor'));
+        else return back();
     }
 
 
@@ -73,8 +63,11 @@ class VendorController extends Controller
         return redirect()->back();
     }
 
-    public function destroy($id)
+    public function destroy($id, VendorService $vendorService)
     {
-        //
+        $vendorService->destroy($id);
+        Session::flash('success', 'Vendor has been deleted');
+
+        return back();
     }
 }

@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('users.index')
+@section('roles.index')
     active
 @stop
 

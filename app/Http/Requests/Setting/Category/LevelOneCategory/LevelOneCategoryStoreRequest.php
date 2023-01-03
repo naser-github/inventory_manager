@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Setting\Category;
+namespace App\Http\Requests\Setting\Category\LevelOneCategory;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CategoryStoreRequest extends FormRequest
+class LevelOneCategoryStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class CategoryStoreRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,8 @@ class CategoryStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => ['required', 'string', 'unique:level_one_categories'],
+            'status' => ['required', 'boolean'],
         ];
     }
 }

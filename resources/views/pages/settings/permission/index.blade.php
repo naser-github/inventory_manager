@@ -94,14 +94,11 @@
                                                    placeholder="Name" required
                                                    value="{{ old('name') }}"
                                             />
-                                            <span id="error" class="text-danger m-0 p-0" role="alert">
-                                            {{$errors->first('name')}}
-                                        </span>
 
                                             @error('name')
                                             <span class="text-danger m-0 p-0" role="alert">
-                                            {{$errors->first('name')}}
-                                        </span>
+                                                {{$errors->first('name')}}
+                                            </span>
                                             @enderror
                                         </div>
                                     </div>

@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Setting\Category;
+namespace App\Http\Requests\Setting\Category\LevelOneCategory;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class CategoryUpdateRequest extends FormRequest
+class LevelOneCategoryUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +14,7 @@ class CategoryUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +25,9 @@ class CategoryUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'id' => ['required', 'integer'],
+            'name' => ['required', 'string', Rule::unique('level_one_categories')->ignore($this->id)],
+            'status' => ['required', 'boolean'],
         ];
     }
 }

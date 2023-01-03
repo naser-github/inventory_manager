@@ -13,7 +13,7 @@ class LocationStoreRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,9 @@ class LocationStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => ['required', 'string', 'unique:locations'],
+            'description' => ['bail','nullable'],
+            'status' => ['required', 'boolean'],
         ];
     }
 }

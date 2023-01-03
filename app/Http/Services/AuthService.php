@@ -7,15 +7,13 @@ use App\Models\User;
 use App\Models\UserProfile;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
-use PhpParser\Node\Expr\Cast\Object_;
 
 class AuthService
 {
     /**
      * @param $payload
-     * @return User
+     * @return \App\Models\Setting\\App\Models\User
      */
     public function createUser($payload): User
     {
@@ -54,7 +52,7 @@ class AuthService
 
     /**
      * @param $payload
-     * @return User
+     * @return \App\Models\Setting\User
      */
     public function socialMediaLogin($payload): User
     {

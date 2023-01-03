@@ -3,83 +3,82 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Setting\Location\LocationStoreRequest;
+use App\Http\Requests\Setting\Location\LocationUpdateRequest;
+use App\Http\Services\setting\LocationService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class LocationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    public function index(LocationService $locationService)
     {
-        //
+        $locations = $locationService->index();
+
+        return view('pages.settings.location.index', compact('locations'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param LocationStoreRequest $request
+     * @param LocationService $locationService
+     * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(LocationStoreRequest $request, LocationService $locationService): RedirectResponse
     {
-        //
+        $validateData = $request->validated();
+
+        $locationService->store($validateData);
+
+        Session::flash('success', 'Location has been created');
+        return back();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         //
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @param LocationUpdateRequest $request
+     * @param LocationService $locationService
+     * @return RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update($id, LocationUpdateRequest $request, LocationService $locationService): RedirectResponse
     {
-        //
+        $validateData = $request->validated();
+
+        $location = $locationService->findById($id);
+
+        if ($location) {
+            $locationService->update($location, $validateData);
+        }
+        Session::flash('success', 'Vendor has been updated');
+        return redirect()->back();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function destroy($id, LocationService $locationService)
     {
-        //
+//        $locationAlreadyAssign = $locationService->findByIdWR($id);
+//
+//        if (count($locationAlreadyAssign->roles) > 0)
+//            Session::flash('error', 'Permission denied');
+//        else {
+//            $locationService->destroy($id);
+//            Session::flash('success', 'Permission has been deleted');
+//        }
+//        return back();
     }
 }

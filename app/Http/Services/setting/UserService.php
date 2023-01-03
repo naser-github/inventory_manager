@@ -4,9 +4,7 @@ namespace App\Http\Services\setting;
 
 use App\Models\User;
 use App\Models\UserProfile;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -17,7 +15,7 @@ class UserService
      */
     public function index(): Collection|array
     {
-        return User::query()->with(['profile'])->orderBy('name', 'ASC')->get();
+        return \App\Models\User::query()->with(['profile'])->orderBy('name', 'ASC')->get();
     }
 
     /**
@@ -25,7 +23,7 @@ class UserService
      */
     public function findByAuthId(): object|null
     {
-        return User::query()->where('id', Auth::id())->first();
+        return \App\Models\User::query()->where('id', Auth::id())->first();
     }
 
     /**
@@ -34,7 +32,7 @@ class UserService
      */
     public function findById($payload): object|null
     {
-        return User::query()
+        return \App\Models\User::query()
             ->where('id', $payload)
             ->first();
     }
@@ -55,11 +53,11 @@ class UserService
     /**
      * @param $payload
      * @param $password
-     * @return User
+     * @return \App\Models\User
      */
-    public function store($payload): User
+    public function store($payload): \App\Models\User
     {
-        $user = new User();
+        $user = new \App\Models\User();
         $user->name = $payload['first_name'] . " " . $payload['last_name'];
         $user->email = $payload['email'];
         $user->password = Hash::make($payload['password']);
@@ -112,7 +110,7 @@ class UserService
      */
     public function userData($payload): object|null
     {
-        return User::query()->with(['profile', 'roles'])->where('id', $payload)->first();
+        return \App\Models\User::query()->with(['profile', 'roles'])->where('id', $payload)->first();
     }
 
 }

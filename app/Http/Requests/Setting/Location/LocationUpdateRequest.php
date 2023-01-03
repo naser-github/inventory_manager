@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Setting\Location;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class LocationUpdateRequest extends FormRequest
 {
@@ -13,7 +14,7 @@ class LocationUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +25,10 @@ class LocationUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'id' => ['required', 'integer'],
+            'name' => ['required', 'string', Rule::unique('locations')->ignore($this->id)],
+            'description' => ['bail','nullable'],
+            'status' => ['required', 'boolean'],
         ];
     }
 }

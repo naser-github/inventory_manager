@@ -2,7 +2,7 @@
 
 namespace App\Http\Services\setting;
 
-use App\Models\Vendor;
+use App\Models\Setting\Vendor;
 use Illuminate\Database\Eloquent\Collection;
 
 
@@ -22,24 +22,20 @@ class VendorService
      */
     public function findById($payload): object|null
     {
-        return Vendor::query()
-            ->where('id', $payload)
-            ->first();
+        return Vendor::query()->where('id', $payload)->first();
     }
 
 
     /**
      * @param $payload
-     * @return Vendor
+     * @return void
      */
-    public function store($payload): Vendor
+    public function store($payload): void
     {
         $vendor = new Vendor();
         $vendor->name = $payload['name'];
         $vendor->status = $payload['status'];
         $vendor->save();
-
-        return $vendor;
     }
 
     /**
@@ -52,6 +48,15 @@ class VendorService
         $vendor->name = $payload['name'];
         $vendor->status = $payload['status'];
         $vendor->save();
+    }
+
+    /**
+     * @param $payload
+     * @return void
+     */
+    public function destroy($payload): void
+    {
+        Vendor::query()->where('id', $payload)->delete();
     }
 
 }

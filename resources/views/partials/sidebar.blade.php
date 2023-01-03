@@ -312,10 +312,10 @@
                 <!--begin:Menu item-->
                 <div class="menu-item">
                     <!--begin:Menu link-->
-                    <a class="menu-link @yield('users.index')" href="{{route('users.index')}}">
+                    <a class="menu-link @yield('categories.index')" href="{{route('categories.index')}}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon-->
-                            <i class="fa-solid fa-users"></i>
+                            <i class="fa-solid fa-network-wired text-white fs-6"></i>
                             <!--end::Svg Icon-->
                         </span>
                         <span class="menu-title">Category</span>
@@ -327,10 +327,10 @@
                 <!--begin:Menu item-->
                 <div class="menu-item">
                     <!--begin:Menu link-->
-                    <a class="menu-link @yield('permissions.index')" href="{{route('permissions.index')}}">
+                    <a class="menu-link @yield('items.index')" href="{{route('items.index')}}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon-->
-                            <i class="fa-solid fa-shield-halved"></i>
+                            <i class="fa-solid fa-shapes text-white fs-6"></i>
                             <!--end::Svg Icon-->
                         </span>
                         <span class="menu-title">Item</span>
@@ -342,10 +342,25 @@
                 <!--begin:Menu item-->
                 <div class="menu-item">
                     <!--begin:Menu link-->
-                    <a class="menu-link @yield('roles.index')" href="{{route('roles.index')}}">
+                    <a class="menu-link @yield('locations.index')" href="{{route('locations.index')}}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon-->
-                            <i class="fa-solid fa-diagram-project"></i>
+                            <i class="fa-solid fa-location-crosshairs text-white fs-6"></i>
+                            <!--end::Svg Icon-->
+                        </span>
+                        <span class="menu-title">Location</span>
+                    </a>
+                    <!--end:Menu link-->
+                </div>
+                <!--end:Menu item-->
+
+                <!--begin:Menu item-->
+                <div class="menu-item">
+                    <!--begin:Menu link-->
+                    <a class="menu-link @yield('vendors.index')" href="{{route('vendors.index')}}">
+                        <span class="menu-icon">
+                            <!--begin::Svg Icon-->
+                            <i class="fa-solid fa-industry text-white fs-6"></i>
                             <!--end::Svg Icon-->
                         </span>
                         <span class="menu-title">Vendor</span>
@@ -370,7 +385,7 @@
                     <a class="menu-link @yield('permissions.index')" href="{{route('permissions.index')}}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon-->
-                            <i class="fa-solid fa-shield-halved"></i>
+                            <i class="fa-solid fa-shield-halved text-white fs-6"></i>
                             <!--end::Svg Icon-->
                         </span>
                         <span class="menu-title">Permission Management</span>
@@ -385,7 +400,7 @@
                     <a class="menu-link @yield('roles.index')" href="{{route('roles.index')}}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon-->
-                            <i class="fa-solid fa-diagram-project"></i>
+                            <i class="fa-solid fa-diagram-project text-white fs-6"></i>
                             <!--end::Svg Icon-->
                         </span>
                         <span class="menu-title">Roles Management</span>
@@ -400,7 +415,7 @@
                     <a class="menu-link @yield('users.index')" href="{{route('users.index')}}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon-->
-                            <i class="fa-solid fa-users"></i>
+                            <i class="fa-solid fa-users text-white fs-6"></i>
                             <!--end::Svg Icon-->
                         </span>
                         <span class="menu-title">User Management</span>

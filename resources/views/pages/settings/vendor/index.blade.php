@@ -1,23 +1,23 @@
 @extends('layouts.master')
 
-@section('permissions.index')
+@section('vendors.index')
     active
 @stop
 
 @section('breadcrumb_navigation_title')
-    Permissions List
+    Vendors List
 @endsection
 
 @section('breadcrumb_navigation_path')
     <!--begin::Item-->
-    <li class="breadcrumb-item text-muted">Permission Management</li>
+    <li class="breadcrumb-item text-muted">Vendor Management</li>
     <!--end::Item-->
     <!--begin::Item-->
     <li class="breadcrumb-item">
         <span class="bullet bg-gray-400 w-5px h-2px"></span>
     </li>
     <!--end::Item-->
-    <li class="breadcrumb-item text-muted">Permissions</li>
+    <li class="breadcrumb-item text-muted">Vendors</li>
     <!--end::Item-->
 @endsection
 
@@ -48,7 +48,7 @@
                     </span>
                     <!--end::Svg Icon-->
                     <input id="searchInput" type="text" data-kt-user-table-filter="search"
-                           class="form-control form-control-solid w-250px ps-14" placeholder="Search permission"/>
+                           class="form-control form-control-solid w-250px ps-14" placeholder="Search vendor"/>
                 </div>
                 <!--end::Search-->
             </div>
@@ -56,67 +56,7 @@
             <!--begin::Card toolbar-->
             <div class="card-toolbar">
                 <!--begin::Toolbar-->
-                <button type="button" class="btn btn-info hover-scale" data-bs-toggle="modal"
-                        data-bs-target="#kt_modal_permission">
-                    <!--begin::Svg Icon-->
-                    <span class="svg-icon svg-icon-2">
-                             <i class="fa-solid fa-plus fs-2"></i>
-                        </span>
-                    <!--end::Svg Icon-->
-                    Add Permission
-                </button>
-
-                <div class="modal fade" tabindex="-1" id="kt_modal_permission">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h3 class="modal-title">Create Permission</h3>
-
-                                <!--begin::Close-->
-                                <div class="btn btn-icon btn-sm btn-active-light-info ms-2" data-bs-dismiss="modal"
-                                     aria-label="Close">
-                                    <span class="svg-icon svg-icon-1">
-                                        <i class="fa-solid fa-xmark text-info"></i>
-                                    </span>
-                                </div>
-                                <!--end::Close-->
-                            </div>
-
-                            <form role="form" method="POST" action="{{ route('permissions.store') }}">
-                                @csrf
-                                <div class="modal-body">
-
-                                    <div class="row mt-4">
-                                        {{--Name--}}
-                                        <div class="col-12 mb-6">
-                                            <label for="name" class="required form-label">Name</label>
-                                            <input type="text" id="name" name="name" class="form-control"
-                                                   placeholder="Name" required
-                                                   value="{{ old('name') }}"
-                                            />
-                                            <span id="error" class="text-danger m-0 p-0" role="alert">
-                                            {{$errors->first('name')}}
-                                        </span>
-
-                                            @error('name')
-                                            <span class="text-danger m-0 p-0" role="alert">
-                                            {{$errors->first('name')}}
-                                        </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-info">
-                                        Create
-                                    </button>
-                                </div>
-                            </form>
-
-                        </div>
-                    </div>
-                </div>
+                @include('pages.settings.vendor.create')
                 <!--end::Toolbar-->
             </div>
             <!--end::Card toolbar-->
@@ -125,13 +65,13 @@
         <!--begin::Card body-->
         <div class="card-body py-4">
             <!--begin::Table-->
-            <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_permissions">
+            <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_vendors">
                 <!--begin::Table head-->
                 <thead>
                 <!--begin::Table row-->
                 <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
                     <th class="min-w-125px">Name</th>
-                    <th class="min-w-125px">Guard Name</th>
+                    <th class="min-w-125px">Status</th>
                     <th class="text-end min-w-100px">Actions</th>
                 </tr>
                 <!--end::Table row-->
@@ -139,23 +79,27 @@
                 <!--end::Table head-->
                 <!--begin::Table body-->
                 <tbody class="text-gray-600 fw-semibold">
-                @foreach($permissions as $permission)
+                @foreach($vendors as $vendor)
                     <!--begin::Table row-->
                     <tr>
 
                         <!--begin::Name-->
-                        <td>
-                            {{$permission->name}}
-                        </td>
+                        <td>{{$vendor->name}}</td>
                         <!--end::Name=-->
 
-                        <!--begin::Guard Name-->
+                        <!--begin::Status=-->
                         <td>
-                            <span class="badge badge-light-info ">{{$permission->guard_name}}</span>
+                            <span style="display: none">{{$vendor->status}}</span>
+                            @if( $vendor->status==1)
+                                <i class="fa-solid fa-circle-check text-success fs-2"></i>
+                            @else
+                                <i class="fa-solid fa-circle-xmark text-danger fs-2"></i>
+                            @endif
                         </td>
-                        <!--end::Guard Name-->
+                        <!--end::Status-->
 
                         <!--begin::Action=-->
+
                         <td class="text-end">
                             <a href="#" class="btn btn-light btn-active-light-info btn-sm"
                                data-kt-menu-trigger="click"
@@ -169,20 +113,31 @@
                                             fill="currentColor"/>
                                     </svg>
                                 </span>
-                                <!--end::Svg Icon--></a>
+                                <!--end::Svg Icon-->
+                            </a>
                             <!--begin::Menu-->
                             <div
                                 class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary  fw-semibold fs-7 w-125px py-4"
                                 data-kt-menu="true">
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">
+                                    <button type="button" class="menu-link btn btn-sm w-100 px-3"
+                                            onclick="editVendor({{$vendor->id}})">
+                                        <i class="fa-regular fa-pen-to-square me-2"></i> Edit
+                                    </button>
+                                </div>
+
+
+                                <!--end::Menu item-->
+
+                                <!--begin::Menu item-->
+                                <div class="menu-item px-3">
                                     <form role="form" method="POST"
-                                          action="{{ route('permissions.destroy', $permission->id) }}">
+                                          action="{{ route('vendors.destroy', $vendor->id) }}">
                                         @csrf
                                         @method('Delete')
-                                        <button type="submit"
-                                                class="btn btn-sm btn-white btn-active-light-info dropdown-item">
-                                            <i class="fa-solid fa-trash text-info me-2"></i> Delete
+                                        <button type="submit" class="menu-link btn btn-sm w-100 px-3">
+                                            <i class="fa-solid fa-trash me-2"></i> Delete
                                         </button>
                                     </form>
                                 </div>
@@ -190,6 +145,7 @@
                             </div>
                             <!--end::Menu-->
                         </td>
+
                         <!--end::Action=-->
                     </tr>
                     <!--end::Table row-->
@@ -201,6 +157,11 @@
         </div>
         <!--end::Card body-->
     </div>
+
+    <div class="modal fade" tabindex="-1" id="kt_modal_vendor_edit">
+        <div class="modal-dialog" id="modal_body_vendor_edit">
+        </div>
+    </div>
 @endsection
 
 
@@ -211,7 +172,7 @@
 
     <script>
         // Begin::DataTable
-        const table = $('#kt_table_permissions').DataTable();
+        const table = $('#kt_table_vendors').DataTable();
 
         // #searchInput is a <input type="text"> element
         $('#searchInput').on('keyup', function () {
@@ -219,14 +180,42 @@
         });
         // END::DataTable
 
-        // Begin::Modal
+        // Begin::Add Modal
         $(document).ready(function () {
-            $('#kt_modal_permission').modal({
+            $('#kt_modal_vendor_add').modal({
+                backdrop: 'static',
+                keyboard: false
+            })
+        });
+        // END::Add Modal
+
+        // Begin:: Edit Modal
+        $(document).ready(function () {
+            $('#kt_modal_vendor_edit').modal({
                 backdrop: 'static',
                 keyboard: false
             })
         });
 
-        // END::Modal
+        //ajax [edit vendor]
+
+        function editVendor(id) {
+
+            $.ajax({
+                type: 'POST',
+                url: "{!! route('modal.vendors.edit') !!}",
+                cache: false,
+                data: {
+                    _token: "{{csrf_token()}}",
+                    'id': id
+                },
+                success: function (data) {
+                    $('#modal_body_vendor_edit').html(data);
+                    $('#kt_modal_vendor_edit').modal('show');
+                }
+            });
+        }
+
+        // END::Edit Modal
     </script>
 @endsection
