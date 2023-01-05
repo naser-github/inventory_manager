@@ -12,15 +12,34 @@ class ItemService
      */
     public function index(): Collection|array
     {
-        return Item::query()->orderBy('name', 'ASC')->get();
+        return Item::query()
+            ->with(['master_category', 'level_one_category', 'level_two_category'])
+            ->orderBy('name', 'ASC')
+            ->get();
     }
 
 
+    /**
+     * @param $payload
+     * @return object|null
+     */
     public function findById($payload): object|null
     {
         return Item::query()->where('id', $payload)->first();
     }
 
+    /**
+     * @param $payload
+     * @return object|null
+     * WMLL means with master category, Level One Category, Level Two Category,
+     */
+    public function findByIdWMLL($payload): object|null
+    {
+        return Item::query()
+            ->with(['master_category', 'level_one_category', 'level_two_category'])
+            ->where('id', $payload)
+            ->first();
+    }
 
     /**
      * @param $payload
@@ -49,7 +68,12 @@ class ItemService
         $item->save();
     }
 
-    public function destroy($payload){
+    /**
+     * @param $payload
+     * @return void
+     */
+    public function destroy($payload): void
+    {
         $payload->delete();
     }
 

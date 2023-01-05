@@ -59,12 +59,19 @@ Route::resource('vendors', VendorController::class)->only([
 ]);
 
 Route::prefix('/modal')->group(function () {
-    Route::post('/master-category-edit', [MasterCategoryController::class, 'edit'])->name('modal.master_category.edit');
-    Route::post('/level-one-category-edit', [LevelOneCategoryController::class, 'edit'])->name('modal.level_one_category.edit');
-    Route::post('/level-two-category-edit', [LevelTwoCategoryController::class, 'edit'])->name('modal.level_two_category.edit');
+    Route::prefix('/add')->group(function () {
+        Route::get('/level-one-category', [LevelOneCategoryController::class, 'create'])->name('modal.level_one_category.add');
+        Route::get('/level-two-category', [LevelTwoCategoryController::class, 'create'])->name('modal.level_two_category.add');
+    });
 
-    Route::post('/location-edit', [LocationController::class, 'edit'])->name('modal.locations.edit');
-    Route::post('/vendor-edit', [VendorController::class, 'edit'])->name('modal.vendors.edit');
+    Route::prefix('/edit')->group(function () {
+        Route::post('/master-category', [MasterCategoryController::class, 'edit'])->name('modal.master_category.edit');
+        Route::post('/level-one-category', [LevelOneCategoryController::class, 'edit'])->name('modal.level_one_category.edit');
+        Route::post('/level-two-category', [LevelTwoCategoryController::class, 'edit'])->name('modal.level_two_category.edit');
+
+        Route::post('/location', [LocationController::class, 'edit'])->name('modal.locations.edit');
+        Route::post('/vendor', [VendorController::class, 'edit'])->name('modal.vendors.edit');
+    });
 });
 
 Route::resources([

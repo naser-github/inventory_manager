@@ -30,7 +30,7 @@
                         <i class="fa-solid fa-dice-one fs-4x text-hover-info"></i>
                     </span>
                     <span class="ms-3 text-gray-700 parent-hover-primary fs-1 fw-bold">
-                        <span class="text-nowrap">Master Categories</span>
+                        Master Categories
                     </span>
                 </div>
             </a>
@@ -43,7 +43,7 @@
                         <i class="fa-solid fa-dice-one fs-4x text-hover-info"></i>
                     </span>
                     <span class="ms-3 text-gray-700 parent-hover-primary fs-1 fw-bold">
-                        <span class="text-nowrap">Level One Categories</span>
+                        Level One Categories
                     </span>
                 </div>
             </a>
@@ -56,7 +56,7 @@
                         <i class="fa-solid fa-dice-one fs-4x text-hover-info"></i>
                     </span>
                     <span class="ms-3 text-gray-700 parent-hover-primary fs-1 fw-bold">
-                        <span class="text-nowrap">Level Two Categories</span>
+                        Level Two Categories
                     </span>
                 </div>
             </a>

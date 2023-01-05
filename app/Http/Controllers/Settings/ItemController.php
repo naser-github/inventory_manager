@@ -85,14 +85,14 @@ class ItemController extends Controller
         LevelOneCategoryService $levelOneCategoryService,
         LevelTwoCategoryService $levelTwoCategoryService)
     {
-        $item = $itemService->findById($id);
+        $item = $itemService->findByIdWMLL($id);
 
         if ($item) {
             $master_categories = $masterCategoryService->masterCategoryList();
             $level_one_categories = $levelOneCategoryService->levelOneCategoryList();
             $level_two_categories = $levelTwoCategoryService->levelTwoCategoryList();
 
-            return view('pages.settings.item.create', compact(
+            return view('pages.settings.item.edit', compact(
                 'item', 'master_categories', 'level_one_categories', 'level_two_categories'
             ));
         } else {
@@ -108,7 +108,6 @@ class ItemController extends Controller
         $item = $itemService->findById($id);
 
         if ($item) {
-
             $itemService->update($item, $validateData);
 
             return redirect()->route('items.show', $id);
@@ -119,13 +118,13 @@ class ItemController extends Controller
 
     public function destroy($id, ItemService $itemService)
     {
-        $item = $itemService->findById($id);
-
-        if ($item) {
-            $item->destroy($item);
-        } else {
-            Session::flash('error', 'No Item Found');
-            return redirect()->back();
-        }
+//        $item = $itemService->findById($id);
+//
+//        if ($item) {
+//            $item->destroy($item);
+//        } else {
+//            Session::flash('error', 'No Item Found');
+//            return redirect()->back();
+//        }
     }
 }

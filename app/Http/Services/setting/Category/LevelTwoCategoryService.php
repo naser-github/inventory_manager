@@ -13,7 +13,10 @@ class LevelTwoCategoryService
      */
     public function index(): Collection|array
     {
-        return LevelTwoCategory::query()->orderBy('name', 'ASC')->get();
+        return LevelTwoCategory::query()
+            ->with(['master_category','level_one_category'])
+            ->orderBy('name', 'ASC')
+            ->get();
     }
 
     /**

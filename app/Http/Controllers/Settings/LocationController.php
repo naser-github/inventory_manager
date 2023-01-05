@@ -80,7 +80,7 @@ class LocationController extends Controller
 //            Session::flash('error', 'Permission denied');
 //        else {
 //            $locationService->destroy($id);
-//            Session::flash('success', 'Permission has been deleted');
+//            Session::flash('success', 'Location has been deleted');
 //        }
 //        return back();
     }

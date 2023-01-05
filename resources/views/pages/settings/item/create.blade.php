@@ -81,7 +81,7 @@
                                 </option>
                             @endforeach
                         </select>
-                        @error('role')
+                        @error('master_category')
                         <span class="text-danger m-0 p-0" role="alert">
                             {{$errors->first('master_category')}}
                         </span>
@@ -100,7 +100,7 @@
                                 </option>
                             @endforeach
                         </select>
-                        @error('role')
+                        @error('level_one_category')
                         <span class="text-danger m-0 p-0" role="alert">
                             {{$errors->first('level_one_category')}}
                         </span>
@@ -119,7 +119,7 @@
                                 </option>
                             @endforeach
                         </select>
-                        @error('role')
+                        @error('level_two_category')
                         <span class="text-danger m-0 p-0" role="alert">
                             {{$errors->first('level_two_category')}}
                         </span>

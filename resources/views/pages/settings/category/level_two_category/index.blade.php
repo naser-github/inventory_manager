@@ -56,7 +56,12 @@
             <!--begin::Card toolbar-->
             <div class="card-toolbar">
                 <!--begin::Toolbar-->
-                @include('pages.settings.category.level_two_category.create')
+                <button type="button" class="btn btn-info hover-scale" onclick="addCategory()">
+                    <!--begin::Svg Icon-->
+                    <span class="svg-icon svg-icon-2"><i class="fa-solid fa-plus fs-2"></i></span>
+                    <!--end::Svg Icon-->
+                    Add Level Two Category
+                </button>
                 <!--end::Toolbar-->
             </div>
             <!--end::Card toolbar-->
@@ -71,6 +76,8 @@
                 <!--begin::Table row-->
                 <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
                     <th class="min-w-125px">Name</th>
+                    <th class="min-w-125px">Master Category</th>
+                    <th class="min-w-125px">Sub Category</th>
                     <th class="min-w-125px">Status</th>
                     <th class="text-end min-w-100px">Actions</th>
                 </tr>
@@ -82,10 +89,25 @@
                 @foreach($level_two_categories as $level_two_category)
                     <!--begin::Table row-->
                     <tr>
-
                         <!--begin::Name-->
                         <td>{{$level_two_category->name}}</td>
-                        <!--end::Name=-->
+                        <!--end::Name-->
+
+                        <!--begin::Master Category-->
+                        <td>
+                            <span class="badge badge-light-info">
+                                {{$level_two_category->master_category->name}}
+                            </span>
+                        </td>
+                        <!--end::Master Category-->
+
+                        <!--begin::Sub Category-->
+                        <td>
+                            <span class="badge badge-light-info">
+                                {{$level_two_category->level_one_category->name}}
+                            </span>
+                        </td>
+                        <!--end::Master Category-->
 
                         <!--begin::Status=-->
                         <td>
@@ -158,10 +180,19 @@
         <!--end::Card body-->
     </div>
 
-    <div class="modal fade" tabindex="-1" id="kt_modal_level_two_category_edit">
-        <div class="modal-dialog" id="modal_body_two_category_edit">
+    {{--Begin:: add modal--}}
+    <div class="modal fade" tabindex="-1" id="kt_modal_level_two_category_add">
+        <div class="modal-dialog" id="modal_body_level_two_category_add">
         </div>
     </div>
+    {{--End:: add modal--}}
+
+    {{--Begin:: edit modal--}}
+    <div class="modal fade" tabindex="-1" id="kt_modal_level_two_category_edit">
+        <div class="modal-dialog" id="modal_body_level_two_category_edit">
+        </div>
+    </div>
+    {{--End:: edit modal--}}
 @endsection
 
 
@@ -187,6 +218,20 @@
                 keyboard: false
             })
         });
+
+        //ajax [add vendor]
+        function addCategory() {
+            $.ajax({
+                type: 'GET',
+                url: "{!! route('modal.level_two_category.add') !!}",
+                cache: false,
+                success: function (data) {
+                    $('#modal_body_level_two_category_add').html(data);
+                    $('#kt_modal_level_two_category_add').modal('show');
+                }
+            });
+        }
+
         // END::Add Modal
 
         // Begin:: Edit Modal
@@ -210,7 +255,7 @@
                     'id': id
                 },
                 success: function (data) {
-                    $('#modal_body_two_category_edit').html(data);
+                    $('#modal_body_level_two_category_edit').html(data);
                     $('#kt_modal_level_two_category_edit').modal('show');
                 }
             });

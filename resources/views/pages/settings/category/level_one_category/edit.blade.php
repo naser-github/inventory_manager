@@ -28,6 +28,26 @@
                     @enderror
                 </div>
 
+                {{--master category--}}
+                <div class="col-sm-12 mb-6">
+                    <label for="master_category" class="required form-label">Master Category</label>
+                    <select id="master_category" name="master_category" class="form-select"
+                            aria-label="Assign master category" required>
+                        <option disabled>Assign a Master Category</option>
+                        @foreach($master_categories as $master_category)
+                            <option
+                                @if($level_one_category->master_category_id == $master_category->id) selected @endif
+                                value="{{ $master_category->id }}"
+                            >
+                                {{ $master_category->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('master_category')
+                    <span class="text-danger m-0 p-0" role="alert">{{$errors->first('master_category')}}</span>
+                    @enderror
+                </div>
+
                 {{--Status--}}
                 <div class="col-sm-12 mb-6">
                     <label for="status" class="required form-label">Select a status</label>

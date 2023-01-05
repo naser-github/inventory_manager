@@ -13,7 +13,10 @@ class LevelOneCategoryService
      */
     public function index(): Collection|array
     {
-        return LevelOneCategory::query()->orderBy('name', 'ASC')->get();
+        return LevelOneCategory::query()
+            ->with(['master_category'])
+            ->orderBy('name', 'ASC')
+            ->get();
     }
 
     /**

@@ -66,8 +66,8 @@ class MasterCategoryService
     public function masterCategoryList(): Collection
     {
         return MasterCategory::query()
-            ->where('status', '=', 1)
             ->select('id', 'name')
+            ->where('status', '=', 1)
             ->orderBy('name', 'ASC')
             ->get();
     }

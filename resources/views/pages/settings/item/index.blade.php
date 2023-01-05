@@ -81,10 +81,11 @@
                 <thead>
                 <!--begin::Table row-->
                 <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
-                    <th class="min-w-125px">User</th>
-                    <th class="min-w-125px">Phone</th>
+                    <th class="min-w-125px">Name</th>
+                    <th class="min-w-125px">Master Category</th>
+                    <th class="min-w-125px">Sub Category 1</th>
+                    <th class="min-w-125px">Sub Category 2</th>
                     <th class="min-w-125px">Status</th>
-                    <th class="min-w-125px">Role</th>
                     <th class="text-end min-w-100px">Actions</th>
                 </tr>
                 <!--end::Table row-->
@@ -92,38 +93,41 @@
                 <!--end::Table head-->
                 <!--begin::Table body-->
                 <tbody class="text-gray-600 fw-semibold">
-                @foreach($items as $user)
+                @foreach($items as $item)
                     <!--begin::Table row-->
                     <tr>
-                        <!--begin::User=-->
-                        <td class="d-flex align-items-center">
-                            <!--begin:: Avatar -->
-                            {{--<div class="symbol symbol-circle symbol-50px overflow-hidden me-3">--}}
-                            {{--    <div class="symbol-label">--}}
-                            {{--        <img src="assets/media/avatars/300-6.jpg" alt="Emma Smith" class="w-100"/>--}}
-                            {{--    </div>--}}
-                            {{--</div>--}}
-                            <!--end::Avatar-->
-                            <!--begin::User details-->
+                        <!--begin::Name-->
+                        <td>{{$item->name}}</td>
+                        <!--end::Name-->
 
-                            <div class="d-flex flex-column">
-                                <span class="text-gray-800 text-hover-primary mb-1">{{$user->name}}</span>
-                                <span>{{$user->email}}</span>
-                            </div>
-                            <!--begin::User details-->
-                        </td>
-                        <!--end::User-->
-
-                        <!--begin::Phone=-->
+                        <!--begin::Master Category-->
                         <td>
-                            {{$user->profile?$user->profile->phone:null}}
+                            <span class="badge badge-light-info">
+                                {{$item->master_category->name}}
+                            </span>
                         </td>
-                        <!--end::Phone=-->
+                        <!--end::Master Category-->
+
+                        <!--begin::Sub Category 1-->
+                        <td>
+                            <span class="badge badge-light-info">
+                                {{$item->level_one_category->name}}
+                            </span>
+                        </td>
+                        <!--end::Sub Category 1-->
+
+                        <!--begin::Sub Category 1-->
+                        <td>
+                            <span class="badge badge-light-info">
+                                {{$item->level_two_category->name}}
+                            </span>
+                        </td>
+                        <!--end::Sub Category 2-->
 
                         <!--begin::Status=-->
                         <td>
-                            <span style="display: none">{{$user->status}}</span>
-                            @if( $user->status==1)
+                            <span style="display: none">{{$item->status}}</span>
+                            @if( $item->status==1)
                                 <i class="fa-solid fa-circle-check text-success fs-2"></i>
                             @else
                                 <i class="fa-solid fa-circle-xmark text-danger fs-2"></i>
@@ -131,13 +135,7 @@
                         </td>
                         <!--end::Status-->
 
-                        <!--begin::Role-->
-                        <td>
-                            @if(count($user->roles)>0)
-                                <span class="badge badge-light-info ">{{$user->roles[0]->name}}</span>
-                            @endif
-                        </td>
-                        <!--end::Role-->
+                        <!--begin::Action=-->
 
                         <!--begin::Action=-->
                         <td class="text-end">
@@ -160,21 +158,28 @@
                                 data-kt-menu="true">
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">
-                                    <a href="{{route('users.edit', $user->id)}}" class="menu-link px-3">
+                                    <a href="{{route('items.edit', $item->id)}}" class="menu-link px-3">
                                         <i class="fa-regular fa-pen-to-square me-2"></i> Edit
                                     </a>
                                 </div>
                                 <!--end::Menu item-->
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">
-                                    <a href="{{route('users.show', $user->id)}}" class="menu-link px-3">
-                                        <i class="fa-solid fa-eye me-2"></i> View
-                                    </a>
+                                    <form role="form" method="POST"
+                                          action="{{ route('items.destroy', $item->id) }}">
+                                        @csrf
+                                        @method('Delete')
+                                        <button type="submit" class="menu-link btn btn-sm w-100 px-3">
+                                            <i class="fa-solid fa-trash me-2"></i> Delete
+                                        </button>
+                                    </form>
                                 </div>
                                 <!--end::Menu item-->
                             </div>
                             <!--end::Menu-->
                         </td>
+                        <!--end::Action=-->
+
                         <!--end::Action=-->
                     </tr>
                     <!--end::Table row-->

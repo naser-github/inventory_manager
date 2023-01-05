@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Setting\Category\LevelOneCategory\LevelOneCategoryStoreRequest;
 use App\Http\Requests\Setting\Category\LevelOneCategory\LevelOneCategoryUpdateRequest;
 use App\Http\Services\setting\Category\LevelOneCategoryService;
+use App\Http\Services\setting\Category\MasterCategoryService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -26,6 +27,17 @@ class LevelOneCategoryController extends Controller
         return view('pages.settings.category.level_one_category.index', compact('level_one_categories'));
     }
 
+    /**
+     * @param MasterCategoryService $masterCategoryService
+     * @return Factory|View|Application
+     */
+    public function create(MasterCategoryService $masterCategoryService): Factory|View|Application
+    {
+        $master_categories = $masterCategoryService->masterCategoryList();
+
+        return view('pages.settings.category.level_one_category.create', compact('master_categories'));
+    }
+
 
     /**
      * @param LevelOneCategoryStoreRequest $request
@@ -42,16 +54,27 @@ class LevelOneCategoryController extends Controller
         return back();
     }
 
+
     /**
      * @param Request $request
      * @param LevelOneCategoryService $levelOneCategoryService
+     * @param MasterCategoryService $masterCategoryService
      * @return View|Factory|Application|RedirectResponse
      */
-    public function edit(Request $request, LevelOneCategoryService $levelOneCategoryService): View|Factory|Application|RedirectResponse
+    public function edit(
+        Request $request,
+        LevelOneCategoryService $levelOneCategoryService,
+        MasterCategoryService $masterCategoryService
+    ): View|Factory|Application|RedirectResponse
     {
         $level_one_category = $levelOneCategoryService->findById($request->id);
 
-        if ($level_one_category) return view('pages.settings.category.level_one_category.edit', compact('level_one_category'));
+        if ($level_one_category) {
+            $master_categories = $masterCategoryService->masterCategoryList();
+            return view('pages.settings.category.level_one_category.edit', compact(
+                'level_one_category', 'master_categories'
+            ));
+        }
         else return back();
     }
 
@@ -74,8 +97,8 @@ class LevelOneCategoryController extends Controller
         return redirect()->back();
     }
 
-    public function destroy($id)
-    {
-        //
-    }
+//    public function destroy($id)
+//    {
+//        //
+//    }
 }

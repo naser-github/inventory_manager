@@ -28,6 +28,42 @@
                     @enderror
                 </div>
 
+
+                {{--master category--}}
+                <div class="col-sm-12 mb-6">
+                    <label for="master_category" class="required form-label">Master Category</label>
+                    <select id="master_category" name="master_category" class="form-select"
+                            aria-label="Assign master category" required>
+                        <option disabled>Assign a Master Category</option>
+                        @foreach($master_categories as $master_category)
+                            <option value="{{ $master_category->id }}">
+                                {{ $master_category->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('master_category')
+                    <span class="text-danger m-0 p-0" role="alert">{{$errors->first('master_category')}}</span>
+                    @enderror
+                </div>
+
+                {{--level one category--}}
+                <div class="col-sm-12 mb-6">
+                    <label for="level_one_category" class="required form-label">Level One Category</label>
+                    <select id="level_one_category" name="level_one_category" class="form-select"
+                            aria-label="Assign master category" required>
+                        <option disabled>Assign a Master Category</option>
+                        @foreach($level_one_categories as $level_one_category)
+                            <option value="{{ $level_one_category->id }}">
+                                {{ $level_one_category->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('level_one_category')
+                    <span class="text-danger m-0 p-0"
+                          role="alert">{{$errors->first('level_one_category')}}</span>
+                    @enderror
+                </div>
+
                 {{--Status--}}
                 <div class="col-sm-12 mb-6">
                     <label for="status" class="required form-label">Select a status</label>

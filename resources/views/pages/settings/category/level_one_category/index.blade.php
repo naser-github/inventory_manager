@@ -56,7 +56,12 @@
             <!--begin::Card toolbar-->
             <div class="card-toolbar">
                 <!--begin::Toolbar-->
-                @include('pages.settings.category.level_one_category.create')
+                <button type="button" class="btn btn-info hover-scale" onclick="addCategory()">
+                    <!--begin::Svg Icon-->
+                    <span class="svg-icon svg-icon-2"><i class="fa-solid fa-plus fs-2"></i></span>
+                    <!--end::Svg Icon-->
+                    Add Level One Category
+                </button>
                 <!--end::Toolbar-->
             </div>
             <!--end::Card toolbar-->
@@ -71,6 +76,7 @@
                 <!--begin::Table row-->
                 <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
                     <th class="min-w-125px">Name</th>
+                    <th class="min-w-125px">Master Category</th>
                     <th class="min-w-125px">Status</th>
                     <th class="text-end min-w-100px">Actions</th>
                 </tr>
@@ -87,7 +93,13 @@
                         <td>{{$level_one_category->name}}</td>
                         <!--end::Name=-->
 
-                        <!--begin::Status=-->
+                        <!--begin::Master Category-->
+                        <td>
+                            <span class="badge badge-light-info">{{$level_one_category->master_category->name}}</span>
+                        </td>
+                        <!--end::Master Category-->
+
+                        <!--begin::Status-->
                         <td>
                             <span style="display: none">{{$level_one_category->status}}</span>
                             @if( $level_one_category->status==1)
@@ -158,10 +170,19 @@
         <!--end::Card body-->
     </div>
 
+    {{--Begin:: add modal--}}
+    <div class="modal fade" tabindex="-1" id="kt_modal_level_one_category_add">
+        <div class="modal-dialog" id="modal_body_level_one_category_add">
+        </div>
+    </div>
+    {{--End:: add modal--}}
+
+    {{--Begin:: edit modal--}}
     <div class="modal fade" tabindex="-1" id="kt_modal_level_one_category_edit">
         <div class="modal-dialog" id="modal_body_level_one_category_edit">
         </div>
     </div>
+    {{--End:: edit modal--}}
 @endsection
 
 
@@ -187,6 +208,20 @@
                 keyboard: false
             })
         });
+
+        //ajax [edit vendor]
+        function addCategory() {
+            $.ajax({
+                type: 'GET',
+                url: "{!! route('modal.level_one_category.add') !!}",
+                cache: false,
+                success: function (data) {
+                    $('#modal_body_level_one_category_add').html(data);
+                    $('#kt_modal_level_one_category_add').modal('show');
+                }
+            });
+        }
+
         // END::Add Modal
 
         // Begin:: Edit Modal
@@ -198,9 +233,7 @@
         });
 
         //ajax [edit vendor]
-
         function editCategory(id) {
-
             $.ajax({
                 type: 'POST',
                 url: "{!! route('modal.level_one_category.edit') !!}",
