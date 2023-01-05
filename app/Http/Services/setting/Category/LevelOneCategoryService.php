@@ -35,6 +35,7 @@ class LevelOneCategoryService
         $level_one_category = new LevelOneCategory();
         $level_one_category->name = $payload['name'];
         $level_one_category->status = $payload['status'];
+        $level_one_category->master_category_id = $payload['master_category'];
         $level_one_category->save();
     }
 
@@ -47,6 +48,7 @@ class LevelOneCategoryService
     {
         $level_one_category->name = $payload['name'];
         $level_one_category->status = $payload['status'];
+        $level_one_category->master_category_id = $payload['master_category'];
         $level_one_category->save();
     }
 
@@ -57,6 +59,18 @@ class LevelOneCategoryService
     public function destroy($payload): void
     {
         LevelOneCategory::query()->where('id', $payload)->delete();
+    }
+
+    /**
+     * @return Collection
+     */
+    public function levelOneCategoryList(): Collection
+    {
+        return LevelOneCategory::query()
+            ->where('status', '=', 1)
+            ->select('id', 'name')
+            ->orderBy('name', 'ASC')
+            ->get();
     }
 
 }

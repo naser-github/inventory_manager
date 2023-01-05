@@ -1,16 +1,16 @@
 @extends('layouts.master')
 
-@section('users.index')
+@section('items.index')
     active
 @stop
 
 @section('breadcrumb_navigation_title')
-    Edit User
+    Edit Item
 @endsection
 
 @section('breadcrumb_navigation_path')
     <!--begin::Item-->
-    <li class="breadcrumb-item text-muted">User Management</li>
+    <li class="breadcrumb-item text-muted">Item Management</li>
     <!--end::Item-->
     <!--begin::Item-->
     <li class="breadcrumb-item">
@@ -36,21 +36,21 @@
         <!--begin::Card header-->
         <!--begin::Card body-->
         <div class="card-body py-4">
-            <form role="form" method="POST" action="{{ route('users.update', $user->id) }}">
+            <form role="form" method="POST" action="{{ route('items.update', $item->id) }}">
                 @csrf
                 @method('Patch')
 
                 <div class="row mt-4">
 
                     {{--id--}}
-                    <input type="hidden" name="id" value="{{ $user->id }}">
+                    <input type="hidden" name="id" value="{{ $item->id }}">
 
                     {{--First Name--}}
                     <div class="col-sm-12 mb-6">
-                        <label for="name" class="required form-label">First Name</label>
+                        <label for="name" class="required form-label">Name</label>
                         <input type="text" id="name" name="name" class="form-control"
                                placeholder="First Name" required
-                               value="{{ $user->name }}"
+                               value="{{ $item->name }}"
                         />
                         @error('name')
                         <span class="text-danger m-0 p-0" role="alert">
@@ -59,64 +59,13 @@
                         @enderror
                     </div>
 
-                    {{--Email--}}
-                    <div class="col-sm-6 mb-6">
-                        <label for="email" class="required form-label">Email</label>
-                        <input type="email" id="email" name="email" class="form-control form-control-solid"
-                               placeholder="Email" readonly
-                               value="{{ $user->email }}"
-                        />
-                        @error('email')
-                        <span class="text-danger m-0 p-0" role="alert">
-                            {{$errors->first('email')}}
-                        </span>
-                        @enderror
-                    </div>
-
-                    {{--Phone--}}
-                    <div class="col-sm-6 mb-6">
-                        <label for="phone" class="required form-label">Phone</label>
-                        <input type="text" id="phone" name="phone" class="form-control"
-                               placeholder="Phone" required
-                               value="{{ $user->profile->phone }}"
-                        />
-                        @error('phone')
-                        <span class="text-danger m-0 p-0" role="alert">
-                            {{$errors->first('phone')}}
-                        </span>
-                        @enderror
-                    </div>
-
-                    {{--Password--}}
-                    <div class="col-sm-6 mb-6">
-                        <label for="password" class="required form-label">Password</label>
-                        <input type="password" id="password" name="password" class="form-control"
-                               placeholder="Password"
-                               value="{{ old('password') }}"
-                        />
-                        @error('password')
-                        <span class="text-danger m-0 p-0" role="alert">
-                            {{$errors->first('password')}}
-                        </span>
-                        @enderror
-                    </div>
-
-                    {{--Confirm Password--}}
-                    <div class="col-sm-6 mb-6">
-                        <label for="password_confirmation" class="required form-label">Confirm Password</label>
-                        <input type="password" id="password_confirmation" name="password_confirmation"
-                               class="form-control" placeholder="Confirm Password"
-                               value="{{ old('password_confirmation') }}"
-                        />
-                    </div>
-
                     {{--Status--}}
                     <div class="col-sm-6 mb-6">
                         <label for="status" class="required form-label">Select a status</label>
                         <select id="status" name="status" class="form-select" aria-label="Select status" required>
                             <option disabled>Select a Status</option>
-                            <option value=1 @if($user->status == 1) selected @endif>Active</option>
-                            <option value=0 @if($user->status == 0) selected @endif>Inactive</option>
+                            <option value=1 @if($item->status == 1) selected @endif>Active</option>
+                            <option value=0 @if($item->status == 0) selected @endif>Inactive</option>
                         </select>
                         @error('status')
                         <span class="text-danger m-0 p-0" role="alert">

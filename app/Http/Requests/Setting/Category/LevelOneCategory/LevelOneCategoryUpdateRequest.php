@@ -28,6 +28,7 @@ class LevelOneCategoryUpdateRequest extends FormRequest
             'id' => ['required', 'integer'],
             'name' => ['required', 'string', Rule::unique('level_one_categories')->ignore($this->id)],
             'status' => ['required', 'boolean'],
+            'master_category' => ['required', 'integer', Rule::exists("master_categories", "id")],
         ];
     }
 }

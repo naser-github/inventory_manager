@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('level_two_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->foreignId('master_category_id')->nullable()->constrained('master_categories');
+            $table->foreignId('level_one_category_id')->nullable()->constrained('level_one_categories');
             $table->boolean('status')->default(true);
             $table->timestamps();
         });

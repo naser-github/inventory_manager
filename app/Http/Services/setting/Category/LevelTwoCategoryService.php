@@ -34,6 +34,8 @@ class LevelTwoCategoryService
         $level_two_category = new LevelTwoCategory();
         $level_two_category->name = $payload['name'];
         $level_two_category->status = $payload['status'];
+        $level_two_category->master_category_id = $payload['master_category'];
+        $level_two_category->level_one_category_id = $payload['level_one_category'];
         $level_two_category->save();
     }
 
@@ -46,6 +48,8 @@ class LevelTwoCategoryService
     {
         $level_two_category->name = $payload['name'];
         $level_two_category->status = $payload['status'];
+        $level_two_category->master_category_id = $payload['master_category'];
+        $level_two_category->level_one_category_id = $payload['level_one_category'];
         $level_two_category->save();
     }
 
@@ -56,6 +60,18 @@ class LevelTwoCategoryService
     public function destroy($payload): void
     {
         LevelTwoCategory::query()->where('id', $payload)->delete();
+    }
+
+    /**
+     * @return Collection
+     */
+    public function levelTwoCategoryList(): Collection
+    {
+        return LevelTwoCategory::query()
+            ->where('status', '=', 1)
+            ->select('id', 'name')
+            ->orderBy('name', 'ASC')
+            ->get();
     }
 
 }

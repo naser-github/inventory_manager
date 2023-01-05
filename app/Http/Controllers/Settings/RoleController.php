@@ -69,7 +69,12 @@ class RoleController extends Controller
     }
 
 
-    public function show($id, RoleService $roleService)
+    /**
+     * @param $id
+     * @param RoleService $roleService
+     * @return Factory|View|Application
+     */
+    public function show($id, RoleService $roleService): Factory|View|Application
     {
         $role = $roleService->findByIdWP($id);
         return view('pages.settings.role.show', compact('role'));
@@ -93,7 +98,6 @@ class RoleController extends Controller
             Session::flash('error', 'No User Found');
             return redirect()->back();
         }
-
     }
 
 

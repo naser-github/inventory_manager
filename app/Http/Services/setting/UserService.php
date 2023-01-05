@@ -15,7 +15,7 @@ class UserService
      */
     public function index(): Collection|array
     {
-        return \App\Models\User::query()->with(['profile'])->orderBy('name', 'ASC')->get();
+        return User::query()->with(['profile'])->orderBy('name', 'ASC')->get();
     }
 
     /**
@@ -23,7 +23,7 @@ class UserService
      */
     public function findByAuthId(): object|null
     {
-        return \App\Models\User::query()->where('id', Auth::id())->first();
+        return User::query()->where('id', Auth::id())->first();
     }
 
     /**
@@ -32,7 +32,7 @@ class UserService
      */
     public function findById($payload): object|null
     {
-        return \App\Models\User::query()
+        return User::query()
             ->where('id', $payload)
             ->first();
     }
@@ -53,11 +53,11 @@ class UserService
     /**
      * @param $payload
      * @param $password
-     * @return \App\Models\User
+     * @return User
      */
-    public function store($payload): \App\Models\User
+    public function store($payload): User
     {
-        $user = new \App\Models\User();
+        $user = new User();
         $user->name = $payload['first_name'] . " " . $payload['last_name'];
         $user->email = $payload['email'];
         $user->password = Hash::make($payload['password']);
@@ -110,7 +110,7 @@ class UserService
      */
     public function userData($payload): object|null
     {
-        return \App\Models\User::query()->with(['profile', 'roles'])->where('id', $payload)->first();
+        return User::query()->with(['profile', 'roles'])->where('id', $payload)->first();
     }
 
 }

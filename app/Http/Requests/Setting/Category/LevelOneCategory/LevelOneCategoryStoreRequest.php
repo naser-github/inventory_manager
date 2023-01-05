@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Setting\Category\LevelOneCategory;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class LevelOneCategoryStoreRequest extends FormRequest
 {
@@ -26,6 +27,7 @@ class LevelOneCategoryStoreRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'unique:level_one_categories'],
             'status' => ['required', 'boolean'],
+            'master_category' => ['required', 'integer', Rule::exists("master_categories", "id")],
         ];
     }
 }

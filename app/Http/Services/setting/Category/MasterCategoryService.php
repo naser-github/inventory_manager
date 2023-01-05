@@ -60,4 +60,16 @@ class MasterCategoryService
         MasterCategory::query()->where('id', $payload)->delete();
     }
 
+    /**
+     * @return Collection
+     */
+    public function masterCategoryList(): Collection
+    {
+        return MasterCategory::query()
+            ->where('status', '=', 1)
+            ->select('id', 'name')
+            ->orderBy('name', 'ASC')
+            ->get();
+    }
+
 }

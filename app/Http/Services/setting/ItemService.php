@@ -2,11 +2,8 @@
 
 namespace App\Http\Services\setting;
 
-use App\Models\User;
-use App\Models\UserProfile;
+use App\Models\Setting\Item;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class ItemService
 {
@@ -15,102 +12,45 @@ class ItemService
      */
     public function index(): Collection|array
     {
-        return \App\Models\User::query()->with(['profile'])->orderBy('name', 'ASC')->get();
+        return Item::query()->orderBy('name', 'ASC')->get();
     }
 
-    /**
-     * @return object|null
-     */
-    public function findByAuthId(): object|null
-    {
-        return \App\Models\User::query()->where('id', Auth::id())->first();
-    }
 
-    /**
-     * @param $payload
-     * @return object|null
-     */
     public function findById($payload): object|null
     {
-        return \App\Models\User::query()
-            ->where('id', $payload)
-            ->first();
+        return Item::query()->where('id', $payload)->first();
     }
+
 
     /**
      * @param $payload
-     * @return object|null
-     * WPR means with profile & role table
+     * @return Item
      */
-    public function findByIdWPR($payload): object|null
+    public function store($payload): Item
     {
-        return User::query()
-            ->with(['profile', 'roles'])
-            ->where('id', $payload)
-            ->first();
+        $item = new Item();
+        $item->name = $payload['name'];
+        $item->status = $payload['status'];
+        $item->master_category_id = $payload['master_category'];
+        $item->level_one_category_id = $payload['level_one_category'];
+        $item->level_two_category_id = $payload['level_two_category'];
+        $item->save();
+
+        return $item;
     }
 
-    /**
-     * @param $payload
-     * @param $password
-     * @return \App\Models\User
-     */
-    public function store($payload): \App\Models\User
+    public function update($item, $payload): void
     {
-        $user = new \App\Models\User();
-        $user->name = $payload['first_name'] . " " . $payload['last_name'];
-        $user->email = $payload['email'];
-        $user->password = Hash::make($payload['password']);
-        $user->status = $payload['status'];
-        $user->save();
-
-        return $user;
+        $item->name = $payload['name'];
+        $item->status = $payload['status'];
+        $item->master_category_id = $payload['master_category'];
+        $item->level_one_category_id = $payload['level_one_category'];
+        $item->level_two_category_id = $payload['level_two_category'];
+        $item->save();
     }
 
-    /**
-     * @param $userId
-     * @param $userPhone
-     * @return void
-     */
-    public function storeProfile($userId, $userPhone): void
-    {
-        $profile = new UserProfile();
-        $profile->user_id = $userId;
-        $profile->phone = $userPhone;
-        $profile->save();
-    }
-
-    /**
-     * @param $user
-     * @param $payload
-     * @return void
-     */
-    public function update($user, $payload): void
-    {
-        $user->name = $payload['name'];
-        $user->email = $payload['email'];
-        if ($payload['password'] != null)
-            $user->password = $payload['password'];
-        $user->status = $payload['status'];
-        $user->save();
-    }
-
-
-    public function updateProfile($userId, $payload): void
-    {
-        $profile = UserProfile::query()->where('user_id', $userId)->first();
-
-        $profile->phone = $payload;
-        $profile->save();
-    }
-
-    /**
-     * @param $payload
-     * @return object|null
-     */
-    public function userData($payload): object|null
-    {
-        return \App\Models\User::query()->with(['profile', 'roles'])->where('id', $payload)->first();
+    public function destroy($payload){
+        $payload->delete();
     }
 
 }

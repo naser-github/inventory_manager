@@ -28,6 +28,8 @@ class LevelTwoCategoryUpdateRequest extends FormRequest
             'id' => ['required', 'integer'],
             'name' => ['required', 'string', Rule::unique('level_two_categories')->ignore($this->id)],
             'status' => ['required', 'boolean'],
+            'master_category' => ['required', 'integer', Rule::exists("master_categories", "id")],
+            'level_one_category' => ['bail', 'nullable', 'integer', Rule::exists("level_one_categories", "id")],
         ];
     }
 }

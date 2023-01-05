@@ -1,16 +1,16 @@
 @extends('layouts.master')
 
-@section('users.index')
+@section('items.index')
     active
 @stop
 
 @section('breadcrumb_navigation_title')
-    Create User
+    Create Item
 @endsection
 
 @section('breadcrumb_navigation_path')
     <!--begin::Item-->
-    <li class="breadcrumb-item text-muted">User Management</li>
+    <li class="breadcrumb-item text-muted">Item Management</li>
     <!--end::Item-->
     <!--begin::Item-->
     <li class="breadcrumb-item">
@@ -36,87 +36,22 @@
         <!--begin::Card header-->
         <!--begin::Card body-->
         <div class="card-body py-4">
-            <form role="form" method="POST" action="{{ route('users.store') }}">
+            <form role="form" method="POST" action="{{ route('items.store') }}">
                 @csrf
 
                 <div class="row mt-4">
-                    {{--First Name--}}
-                    <div class="col-sm-6 mb-6">
-                        <label for="first_name" class="required form-label">First Name</label>
-                        <input type="text" id="first_name" name="first_name" class="form-control"
-                               placeholder="First Name" required
-                               value="{{ old('first_name') }}"
+                    {{--Name--}}
+                    <div class="col-sm-12 mb-6">
+                        <label for="name" class="required form-label">Name</label>
+                        <input type="text" id="name" name="name" class="form-control"
+                               placeholder="Name" required
+                               value="{{ old('name') }}"
                         />
-                        @error('first_name')
+                        @error('name')
                         <span class="text-danger m-0 p-0" role="alert">
-                            {{$errors->first('first_name')}}
+                            {{$errors->first('name')}}
                         </span>
                         @enderror
-                    </div>
-
-                    {{--Last Name--}}
-                    <div class="col-sm-6 mb-6">
-                        <label for="last_name" class="required form-label">Last Name</label>
-                        <input type="text" id="last_name" name="last_name" class="form-control"
-                               placeholder="Last Name" required
-                               value="{{ old('last_name') }}"
-                        />
-                        @error('last_name')
-                        <span class="text-danger m-0 p-0" role="alert">
-                            {{$errors->first('last_name')}}
-                        </span>
-                        @enderror
-                    </div>
-
-                    {{--Email--}}
-                    <div class="col-sm-6 mb-6">
-                        <label for="email" class="required form-label">Email</label>
-                        <input type="email" id="email" name="email" class="form-control"
-                               placeholder="Email" required
-                               value="{{ old('email') }}"
-                        />
-                        @error('email')
-                        <span class="text-danger m-0 p-0" role="alert">
-                            {{$errors->first('email')}}
-                        </span>
-                        @enderror
-                    </div>
-
-                    {{--Phone--}}
-                    <div class="col-sm-6 mb-6">
-                        <label for="phone" class="required form-label">Phone</label>
-                        <input type="text" id="phone" name="phone" class="form-control"
-                               placeholder="Phone" required
-                               value="{{ old('phone') }}"
-                        />
-                        @error('phone')
-                        <span class="text-danger m-0 p-0" role="alert">
-                            {{$errors->first('phone')}}
-                        </span>
-                        @enderror
-                    </div>
-
-                    {{--Password--}}
-                    <div class="col-sm-6 mb-6">
-                        <label for="password" class="required form-label">Password</label>
-                        <input type="password" id="password" name="password" class="form-control"
-                               placeholder="Password" required
-                               value="{{ old('password') }}"
-                        />
-                        @error('password')
-                        <span class="text-danger m-0 p-0" role="alert">
-                            {{$errors->first('password')}}
-                        </span>
-                        @enderror
-                    </div>
-
-                    {{--Confirm Password--}}
-                    <div class="col-sm-6 mb-6">
-                        <label for="password_confirmation" class="required form-label">Confirm Password</label>
-                        <input type="password" id="password_confirmation" name="password_confirmation"
-                               class="form-control" placeholder="Confirm Password" required
-                               value="{{ old('password_confirmation') }}"
-                        />
                     </div>
 
                     {{--Status--}}
@@ -134,20 +69,59 @@
                         @enderror
                     </div>
 
-                    {{--Role--}}
+                    {{--master category--}}
                     <div class="col-sm-6 mb-6">
-                        <label for="role" class="required form-label">Assign a Role</label>
-                        <select id="role" name="role" class="form-select" aria-label="Assign role" required>
-                            <option disabled>Assign a Role</option>
-                            @foreach($roles as $role)
-                                <option value="{{ $role->id }}">
-                                    {{ $role->name }}
+                        <label for="master_category" class="required form-label">Master Category</label>
+                        <select id="master_category" name="master_category" class="form-select"
+                                aria-label="Assign master category" required>
+                            <option disabled>Assign a Master Category</option>
+                            @foreach($master_categories as $master_category)
+                                <option value="{{ $master_category->id }}">
+                                    {{ $master_category->name }}
                                 </option>
                             @endforeach
                         </select>
                         @error('role')
                         <span class="text-danger m-0 p-0" role="alert">
-                            {{$errors->first('role')}}
+                            {{$errors->first('master_category')}}
+                        </span>
+                        @enderror
+                    </div>
+
+                    {{--level one category--}}
+                    <div class="col-sm-6 mb-6">
+                        <label for="level_one_category" class="form-label">Level One Category</label>
+                        <select id="level_one_category" name="level_one_category" class="form-select"
+                                aria-label="Assign level one category">
+                            <option value="">Assign a Level One Category</option>
+                            @foreach($level_one_categories as $level_one_category)
+                                <option value="{{ $level_one_category->id }}">
+                                    {{ $level_one_category->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('role')
+                        <span class="text-danger m-0 p-0" role="alert">
+                            {{$errors->first('level_one_category')}}
+                        </span>
+                        @enderror
+                    </div>
+
+                    {{--level two category--}}
+                    <div class="col-sm-6 mb-6">
+                        <label for="level_two_category" class="form-label">Level Two Category</label>
+                        <select id="level_two_category" name="level_two_category" class="form-select"
+                                aria-label="Assign level two category" required>
+                            <option value="">Assign a Level Two Category</option>
+                            @foreach($level_two_categories as $level_two_category)
+                                <option value="{{ $level_two_category->id }}">
+                                    {{ $level_two_category->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('role')
+                        <span class="text-danger m-0 p-0" role="alert">
+                            {{$errors->first('level_two_category')}}
                         </span>
                         @enderror
                     </div>

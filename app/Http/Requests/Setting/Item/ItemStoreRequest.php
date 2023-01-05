@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Setting\Item;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ItemStoreRequest extends FormRequest
 {
@@ -13,7 +14,7 @@ class ItemStoreRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +25,11 @@ class ItemStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => ['required', 'string', 'max:255', Rule::unique('items')],
+            'status' => ['required', 'boolean'],
+            'master_category' => ['required', 'integer', Rule::exists("master_categories", "id")],
+            'level_one_category' => ['required', 'integer', Rule::exists("level_one_categories", "id")],
+            'level_two_category' => ['required', 'integer', Rule::exists("level_two_categories", "id")],
         ];
     }
 }
