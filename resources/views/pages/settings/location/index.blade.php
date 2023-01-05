@@ -48,7 +48,7 @@
                     </span>
                     <!--end::Svg Icon-->
                     <input id="searchInput" type="text" data-kt-user-table-filter="search"
-                           class="form-control form-control-solid w-250px ps-14" placeholder="Search permission"/>
+                           class="form-control form-control-solid w-250px ps-14" placeholder="Search location"/>
                 </div>
                 <!--end::Search-->
             </div>
@@ -65,7 +65,7 @@
         <!--begin::Card body-->
         <div class="card-body py-4">
             <!--begin::Table-->
-            <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_permissions">
+            <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_locations">
                 <!--begin::Table head-->
                 <thead>
                 <!--begin::Table row-->
@@ -82,7 +82,6 @@
                 @foreach($locations as $location)
                     <!--begin::Table row-->
                     <tr>
-
                         <!--begin::Name-->
                         <td>{{$location->name}}</td>
                         <!--end::Name=-->
@@ -121,8 +120,8 @@
                                 data-kt-menu="true">
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">
-                                    <button type="button" class="menu-link btn btn-sm w-100 px-3" data-bs-toggle="modal"
-                                            data-bs-target="#kt_modal_location_edit">
+                                    <button type="button" class="menu-link btn btn-sm w-100 px-3"
+                                            onclick="editLocation({{$location->id}})">
                                         <i class="fa-regular fa-pen-to-square me-2"></i> Edit
                                     </button>
                                 </div>
@@ -158,7 +157,9 @@
         <!--end::Card body-->
     </div>
 
-{{--    @include('pages.settings.location.edit')--}}
+    <div class="modal fade" tabindex="-1" id="kt_modal_location_edit">
+        <div class="modal-dialog" id="modal_body_location_edit"></div>
+    </div>
 @endsection
 
 
@@ -169,7 +170,7 @@
 
     <script>
         // Begin::DataTable
-        const table = $('#kt_table_permissions').DataTable();
+        const table = $('#kt_table_locations').DataTable();
 
         // #searchInput is a <input type="text"> element
         $('#searchInput').on('keyup', function () {
@@ -187,13 +188,33 @@
         // END::Modal
 
 
-        // Begin::Modal
+        // Begin:: Edit Modal
         $(document).ready(function () {
             $('#kt_modal_location_edit').modal({
                 backdrop: 'static',
                 keyboard: false
             })
         });
-        // END::Modal
+
+        //ajax [edit location]
+
+        function editLocation(id) {
+            console.log(id)
+            $.ajax({
+                type: 'POST',
+                url: "{!! route('modal.locations.edit') !!}",
+                cache: false,
+                data: {
+                    _token: "{{csrf_token()}}",
+                    'id': id
+                },
+                success: function (data) {
+                    $('#modal_body_location_edit').html(data);
+                    $('#kt_modal_location_edit').modal('show');
+                }
+            });
+        }
+
+        // END::Edit Modal
     </script>
 @endsection

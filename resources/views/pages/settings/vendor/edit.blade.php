@@ -9,20 +9,20 @@
         <!--end::Close-->
     </div>
 
-    <form role="form" method="POST" action="{{ route('level-one-categories.update', $level_one_category->id) }}">
+    <form role="form" method="POST" action="{{ route('vendors.update', $vendor->id) }}">
         @csrf
         @method('Patch')
         <div class="modal-body">
 
             <div class="row mt-4">
                 {{--id--}}
-                <input type="hidden" name="id" value="{{ $level_one_category->id }}">
+                <input type="hidden" name="id" value="{{ $vendor->id }}">
 
                 {{--Name--}}
                 <div class="col-12 mb-6">
                     <label for="name" class="required form-label">Name</label>
                     <input type="text" id="name" name="name" class="form-control" placeholder="Name" required
-                           value="{{ $level_one_category->name }}"/>
+                           value="{{ $vendor->name }}"/>
                     @error('name')
                     <span class="text-danger m-0 p-0" role="alert">{{$errors->first('name')}}</span>
                     @enderror
@@ -33,8 +33,8 @@
                     <label for="status" class="required form-label">Select a status</label>
                     <select id="status" name="status" class="form-select" aria-label="Select status" required>
                         <option disabled>Select a Status</option>
-                        <option value="1" @if($level_one_category->status == 1) selected @endif>Active</option>
-                        <option value="0" @if($level_one_category->status == 0) selected @endif>Inactive</option>
+                        <option value="1" @if($vendor->status == 1) selected @endif>Active</option>
+                        <option value="0" @if($vendor->status == 0) selected @endif>Inactive</option>
                     </select>
                     @error('status')
                     <span class="text-danger m-0 p-0" role="alert">{{$errors->first('status')}}</span>

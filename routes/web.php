@@ -63,6 +63,7 @@ Route::prefix('/modal')->group(function () {
     Route::post('/level-one-category-edit', [LevelOneCategoryController::class, 'edit'])->name('modal.level_one_category.edit');
     Route::post('/level-two-category-edit', [LevelTwoCategoryController::class, 'edit'])->name('modal.level_two_category.edit');
 
+    Route::post('/location-edit', [LocationController::class, 'edit'])->name('modal.locations.edit');
     Route::post('/vendor-edit', [VendorController::class, 'edit'])->name('modal.vendors.edit');
 });
 

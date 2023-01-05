@@ -40,14 +40,17 @@ class LocationController extends Controller
         return back();
     }
 
-    public function show($id)
-    {
-        //
-    }
+//    public function show($id)
+//    {
+//        //
+//    }
 
-    public function edit($id)
+    public function edit(Request $request, LocationService $locationService)
     {
-        //
+        $location = $locationService->findById($request->id);
+
+        if ($location) return view('pages.settings.location.edit', compact('location'));
+        else return back();
     }
 
     /**

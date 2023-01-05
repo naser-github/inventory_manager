@@ -49,7 +49,7 @@ class LocationService
     public function update($location, $payload): void
     {
         $location->name = $payload['name'];
-        $location->description = $payload['description'];
+        $location->description = array_key_exists('description', $payload) ? $payload['description'] : null;
         $location->status = $payload['status'];
         $location->save();
     }

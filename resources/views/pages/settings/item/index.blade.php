@@ -64,7 +64,7 @@
                              <i class="fa-solid fa-plus fs-2"></i>
                         </span>
                         <!--end::Svg Icon-->
-                        Add items
+                        Add item
                     </a>
                     <!--end::Add user-->
                 </div>

@@ -5,14 +5,14 @@
         <i class="fa-solid fa-plus fs-2"></i>
     </span>
     <!--end::Svg Icon-->
-    Add Level One Category
+    Create Vendor
 </button>
 
 <div class="modal fade" tabindex="-1" id="kt_modal_vendor_add">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Create Level One Category</h3>
+                <h3 class="modal-title">Add Vendor</h3>
 
                 <!--begin::Close-->
                 <div class="btn btn-icon btn-sm btn-active-light-info ms-2" data-bs-dismiss="modal" aria-label="Close">
@@ -21,7 +21,7 @@
                 <!--end::Close-->
             </div>
 
-            <form role="form" method="POST" action="{{ route('level-one-categories.store') }}">
+            <form role="form" method="POST" action="{{ route('vendors.store') }}">
                 @csrf
                 <div class="modal-body">
 

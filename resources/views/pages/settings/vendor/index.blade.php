@@ -215,7 +215,6 @@
                 }
             });
         }
-
         // END::Edit Modal
     </script>
 @endsection
