@@ -49,6 +49,7 @@ class ItemService
     {
         $item = new Item();
         $item->name = $payload['name'];
+        $item->unit = $payload['unit_name'];
         $item->status = $payload['status'];
         $item->master_category_id = $payload['master_category'];
         $item->level_one_category_id = $payload['level_one_category'];
@@ -61,6 +62,7 @@ class ItemService
     public function update($item, $payload): void
     {
         $item->name = $payload['name'];
+        $item->unit = $payload['unit_name'];
         $item->status = $payload['status'];
         $item->master_category_id = $payload['master_category'];
         $item->level_one_category_id = $payload['level_one_category'];
@@ -75,6 +77,17 @@ class ItemService
     public function destroy($payload): void
     {
         $payload->delete();
+    }
+
+    /**
+     * @return Collection|array
+     */
+    public function itemList(): Collection|array
+    {
+        return Item::query()
+            ->select('id', 'name', 'unit')
+            ->where('status', true)
+            ->get();
     }
 
 }

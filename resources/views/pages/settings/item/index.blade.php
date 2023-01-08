@@ -82,6 +82,7 @@
                 <!--begin::Table row-->
                 <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
                     <th class="min-w-125px">Name</th>
+                    <th class="min-w-125px">Unit</th>
                     <th class="min-w-125px">Master Category</th>
                     <th class="min-w-125px">Sub Category 1</th>
                     <th class="min-w-125px">Sub Category 2</th>
@@ -98,6 +99,12 @@
                     <tr>
                         <!--begin::Name-->
                         <td>{{$item->name}}</td>
+                        <!--end::Name-->
+
+                        <!--begin::Name-->
+                        <td>
+                            <span class="badge badge-light-dark ">{{$item->unit}}</span>
+                        </td>
                         <!--end::Name-->
 
                         <!--begin::Master Category-->

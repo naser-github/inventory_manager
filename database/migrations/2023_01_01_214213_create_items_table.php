@@ -15,6 +15,7 @@ return new class extends Migration {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('unit');
             $table->foreignId('master_category_id')->constrained('master_categories');
             $table->foreignId('level_one_category_id')->nullable()->constrained('level_one_categories');
             $table->foreignId('level_two_category_id')->nullable()->constrained('level_two_categories');

@@ -26,6 +26,7 @@ class ItemStoreRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255', Rule::unique('items')],
+            'unit_name' => ['required', 'string', 'max:255'],
             'status' => ['required', 'boolean'],
             'master_category' => ['required', 'integer', Rule::exists("master_categories", "id")],
             'level_one_category' => ['required', 'integer', Rule::exists("level_one_categories", "id")],

@@ -50,6 +50,19 @@
             </div>
             <!--end::Row-->
 
+            <!--begin::Row-->
+            <div class="row mb-7">
+                <!--begin::Label-->
+                <label class="col-lg-4 fw-semibold text-muted">Name</label>
+                <!--end::Label-->
+                <!--begin::Col-->
+                <div class="col-lg-8">
+                    <span class="badge badge-light-dark ">{{$item->unit}}</span>
+                </div>
+                <!--end::Col-->
+            </div>
+            <!--end::Row-->
+
             <!--begin::Input group-->
             <div class="row mb-7">
                 <!--begin::Label-->

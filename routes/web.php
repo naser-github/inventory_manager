@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Purhcase\PurchaseInboundController;
 use App\Http\Controllers\Settings\Category\LevelOneCategoryController;
 use App\Http\Controllers\Settings\Category\LevelTwoCategoryController;
 use App\Http\Controllers\Settings\Category\MasterCategoryController;
@@ -24,9 +25,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+//Route::get('/dashboard', function () {
+//    return view('dashboard');
+//})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -36,6 +37,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/', function () {
         return view('welcome');
     });
+
+    // Begin::Purchase
+    Route::prefix('/purchase-inbound')->group(function () {
+        Route::get('/create', [PurchaseInboundController::class, 'create'])->name('purchase_inbound.create');
+        Route::post('/store', [PurchaseInboundController::class, 'create'])->name('purchase_inbound.store');
+    });
+
+
+    // End::Purchase
 
     //Begin::Settings
     Route::get('/categories', function () {

@@ -27,6 +27,7 @@ class ItemUpdateRequest extends FormRequest
         return [
             'id' => ['required', 'integer'],
             'name' => ['required', 'string', 'max:255', Rule::unique('items')->ignore($this->id)],
+            'unit_name' => ['required', 'string', 'max:255'],
             'status' => ['required', 'boolean'],
             'master_category' => ['required', 'integer', Rule::exists("master_categories", "id")],
             'level_one_category' => ['required', 'integer', Rule::exists("level_one_categories", "id")],

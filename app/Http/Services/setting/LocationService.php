@@ -3,7 +3,9 @@
 namespace App\Http\Services\setting;
 
 use App\Models\Setting\Location;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 
 class LocationService
@@ -52,6 +54,17 @@ class LocationService
         $location->description = array_key_exists('description', $payload) ? $payload['description'] : null;
         $location->status = $payload['status'];
         $location->save();
+    }
+
+    /**
+     * @return Collection|array
+     */
+    public function locationList(): Collection|array
+    {
+        return Location::query()
+            ->select('id', 'name')
+            ->where('status', true)
+            ->get();
     }
 
 }

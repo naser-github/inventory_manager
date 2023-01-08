@@ -41,7 +41,7 @@
 
                 <div class="row mt-4">
                     {{--Name--}}
-                    <div class="col-sm-12 mb-6">
+                    <div class="col-sm-6 mb-6">
                         <label for="name" class="required form-label">Name</label>
                         <input type="text" id="name" name="name" class="form-control"
                                placeholder="Name" required
@@ -50,6 +50,20 @@
                         @error('name')
                         <span class="text-danger m-0 p-0" role="alert">
                             {{$errors->first('name')}}
+                        </span>
+                        @enderror
+                    </div>
+
+                    {{--Unit--}}
+                    <div class="col-sm-6 mb-6">
+                        <label for="unit_name" class="required form-label">Unit</label>
+                        <input type="text" id="unit_name" name="unit_name" class="form-control"
+                               placeholder="Unit Name" required
+                               value="{{ old('unit_name') }}"
+                        />
+                        @error('unit_name')
+                        <span class="text-danger m-0 p-0" role="alert">
+                            {{$errors->first('unit_name')}}
                         </span>
                         @enderror
                     </div>

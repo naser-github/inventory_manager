@@ -59,4 +59,15 @@ class VendorService
         Vendor::query()->where('id', $payload)->delete();
     }
 
+    /**
+     * @return Collection|array
+     */
+    public function vendorList(): Collection|array
+    {
+        return Vendor::query()
+            ->select('id', 'name')
+            ->where('status', true)
+            ->get();
+    }
+
 }
