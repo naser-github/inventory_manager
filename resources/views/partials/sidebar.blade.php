@@ -74,7 +74,8 @@
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link @yield('purchase_inbound.create')" href="{{route('purchase_inbound.create')}}">
+                            <a class="menu-link @yield('purchase_inbound.create')"
+                               href="{{route('purchase_inbound.create')}}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
@@ -86,7 +87,8 @@
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link" href="../../demo1/dist/dashboards/ecommerce.html">
+                            <a class="menu-link @yield('purchase_inbound.index')"
+                               href="{{route('purchase_inbound.index')}}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>

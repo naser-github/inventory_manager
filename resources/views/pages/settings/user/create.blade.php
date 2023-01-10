@@ -36,6 +36,9 @@
         <!--begin::Card header-->
         <!--begin::Card body-->
         <div class="card-body py-4">
+{{--            @if($errors->any())--}}
+{{--                {!! implode('', $errors->all('<div>:message</div>')) !!}--}}
+{{--            @endif--}}
             <form role="form" method="POST" action="{{ route('users.store') }}">
                 @csrf
 

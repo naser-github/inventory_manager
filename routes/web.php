@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Purhcase\PurchaseInboundController;
+use App\Http\Controllers\Purchase\PurchaseInboundController;
 use App\Http\Controllers\Settings\Category\LevelOneCategoryController;
 use App\Http\Controllers\Settings\Category\LevelTwoCategoryController;
 use App\Http\Controllers\Settings\Category\MasterCategoryController;
@@ -40,8 +40,12 @@ Route::middleware('auth')->group(function () {
 
     // Begin::Purchase
     Route::prefix('/purchase-inbound')->group(function () {
+        Route::get('/index', [PurchaseInboundController::class, 'index'])->name('purchase_inbound.index');
+
         Route::get('/create', [PurchaseInboundController::class, 'create'])->name('purchase_inbound.create');
-        Route::post('/store', [PurchaseInboundController::class, 'create'])->name('purchase_inbound.store');
+        Route::post('/store', [PurchaseInboundController::class, 'store'])->name('purchase_inbound.store');
+
+        Route::get('/show/{id}', [PurchaseInboundController::class, 'show'])->name('purchase_inbound.show');
     });
 
 
