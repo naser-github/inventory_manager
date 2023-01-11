@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Inventory\InventoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Purchase\PurchaseInboundController;
 use App\Http\Controllers\Settings\Category\LevelOneCategoryController;
@@ -47,9 +48,13 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/show/{id}', [PurchaseInboundController::class, 'show'])->name('purchase_inbound.show');
     });
-
-
     // End::Purchase
+
+    // Begin::Inventory
+    Route::prefix('/inventory')->group(function () {
+        Route::get('/', [InventoryController::class, 'index'])->name('inventory.index');
+    });
+    // End::Inventory
 
     //Begin::Settings
     Route::get('/categories', function () {

@@ -22,5 +22,14 @@ class DatabaseSeeder extends Seeder
 
         $this->call(PermissionSeeder::class);
         $this->call(PermissionAssignToRoleSeeder::class);
+
+        $this->call(MasterCategorySeeder::class);
+        $this->call(LevelOneCategorySeeder::class);
+        $this->call(LevelTwoCategorySeeder::class);
+
+        $this->call(ItemSeeder::class);
+
+        $this->call(LocationSeeder::class);
+        $this->call(VendorSeeder::class);
     }
 }

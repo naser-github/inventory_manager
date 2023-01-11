@@ -102,6 +102,21 @@
                 <!--end:Menu item-->
 
                 <!--begin:Menu item-->
+                <div class="menu-item">
+                    <!--begin:Menu link-->
+                    <a class="menu-link @yield('inventory.index')" href="{{route('inventory.index')}}">
+                        <span class="menu-icon">
+                            <!--begin::Svg Icon-->
+                            <i class="fa-solid fa-warehouse text-white fs-6"></i>
+                            <!--end::Svg Icon-->
+                        </span>
+                        <span class="menu-title">Inventory</span>
+                    </a>
+                    <!--end:Menu link-->
+                </div>
+                <!--end:Menu item-->
+
+                <!--begin:Menu item-->
                 <div class="menu-item pt-5">
                     <!--begin:Menu content-->
                     <div class="menu-content">

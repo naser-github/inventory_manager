@@ -100,6 +100,21 @@
                                 <td>{{$inbound_item->remarks}}</td>
                             </tr>
                         @endforeach
+                        <tr class="fw-semibold fs-6 text-gray-800 border-bottom border-gray-200">
+                            <td colspan="6" class="text-end">Sub Total</td>
+                            <td>{{$purchase_inbound->sub_total}}</td>
+                            <td></td>
+                        </tr>
+                        <tr class="fw-semibold fs-6 text-gray-800 border-bottom border-gray-200">
+                            <td colspan="6" class="text-end">Others</td>
+                            <td>{{$purchase_inbound->others}}</td>
+                            <td></td>
+                        </tr>
+                        <tr class="fw-semibold fs-6 text-gray-800 border-bottom border-gray-200">
+                            <td colspan="6" class="text-end">Total</td>
+                            <td>{{$purchase_inbound->grand_total}}</td>
+                            <td></td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
