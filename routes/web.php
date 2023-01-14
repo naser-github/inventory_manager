@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Consumption\ConsumptionController;
 use App\Http\Controllers\Inventory\InventoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Purchase\PurchaseInboundController;
@@ -55,6 +56,16 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [InventoryController::class, 'index'])->name('inventory.index');
     });
     // End::Inventory
+
+    // Begin::Inventory
+    Route::prefix('/consumption')->group(function () {
+        Route::get('/index', [ConsumptionController::class, 'index'])->name('consumption.index');
+
+        Route::get('/add', [ConsumptionController::class, 'add'])->name('consumption.add');
+        Route::post('/store', [ConsumptionController::class, 'store'])->name('consumption.store');
+    });
+    // End::Inventory
+
 
     //Begin::Settings
     Route::get('/categories', function () {

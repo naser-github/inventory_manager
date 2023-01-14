@@ -1,3 +1,5 @@
+<span style="display: none">{{$user = Auth::user()->roles[0]}}</span>
+
 <div id="kt_app_sidebar" class="app-sidebar flex-column" data-kt-drawer="true"
      data-kt-drawer-name="app-sidebar" data-kt-drawer-activate="{default: true, lg: false}"
      data-kt-drawer-overlay="true" data-kt-drawer-width="225px" data-kt-drawer-direction="start"
@@ -46,22 +48,12 @@
                  data-kt-menu="true" data-kt-menu-expand="false">
                 <!--begin:Menu item-->
                 <div data-kt-menu-trigger="click" class="menu-item menu-accordion @yield('purchase_inbound')">
-                    <!--begin:Menu link-->
+                    <!--begin:Menu link [Purchase]-->
                     <span class="menu-link">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: icons/duotune/general/gen025.svg-->
                             <span class="svg-icon svg-icon-2">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <rect x="2" y="2" width="9" height="9" rx="2"
-                                          fill="currentColor"/>
-                                    <rect opacity="0.3" x="13" y="2" width="9" height="9" rx="2"
-                                          fill="currentColor"/>
-                                    <rect opacity="0.3" x="13" y="13" width="9" height="9" rx="2"
-                                          fill="currentColor"/>
-                                    <rect opacity="0.3" x="2" y="13" width="9" height="9" rx="2"
-                                          fill="currentColor"/>
-                                </svg>
+                                <i class="fa-solid fa-right-to-bracket text-white fs-6"></i>
                             </span>
                             <!--end::Svg Icon-->
                         </span>
@@ -101,7 +93,7 @@
                 </div>
                 <!--end:Menu item-->
 
-                <!--begin:Menu item-->
+                <!--begin:Menu item [Inventory]-->
                 <div class="menu-item">
                     <!--begin:Menu link-->
                     <a class="menu-link @yield('inventory.index')" href="{{route('inventory.index')}}">
@@ -116,130 +108,204 @@
                 </div>
                 <!--end:Menu item-->
 
-                <!--begin:Menu item-->
-                <div class="menu-item pt-5">
-                    <!--begin:Menu content-->
-                    <div class="menu-content">
-                        <span class="menu-heading fw-bold text-uppercase fs-7">Settings</span>
+                <!--begin:Menu item [Consumption]-->
+                <div data-kt-menu-trigger="click" class="menu-item menu-accordion @yield('consumption')">
+                    <!--begin:Menu link [Purchase]-->
+                    <span class="menu-link">
+                        <span class="menu-icon">
+                            <!--begin::Svg Icon | path: icons/duotune/general/gen025.svg-->
+                            <span class="svg-icon svg-icon-2">
+                                <i class="fa-solid fa-right-from-bracket text-white fs-6"></i>
+                            </span>
+                            <!--end::Svg Icon-->
+                        </span>
+                        <span class="menu-title">Consumption</span>
+                        <span class="menu-arrow"></span>
+                    </span>
+                    <!--end:Menu link-->
+                    <!--begin:Menu sub-->
+                    <div class="menu-sub menu-sub-accordion">
+                        <!--begin:Menu item-->
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link @yield('consumption.add')"
+                               href="{{route('consumption.add')}}">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-dot"></span>
+                                </span>
+                                <span class="menu-title">Add</span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+                        <!--end:Menu item-->
+                        <!--begin:Menu item-->
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link @yield('consumption.index')"
+                               href="{{route('consumption.index')}}">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-dot"></span>
+                                </span>
+                                <span class="menu-title">List</span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
                     </div>
-                    <!--end:Menu content-->
+                    <!--end:Menu sub-->
                 </div>
                 <!--end:Menu item-->
 
-                <!--begin:Menu item-->
-                <div class="menu-item">
-                    <!--begin:Menu link-->
-                    <a class="menu-link @yield('categories.index')" href="{{route('categories.index')}}">
-                        <span class="menu-icon">
-                            <!--begin::Svg Icon-->
-                            <i class="fa-solid fa-network-wired text-white fs-6"></i>
-                            <!--end::Svg Icon-->
-                        </span>
-                        <span class="menu-title">Category</span>
-                    </a>
-                    <!--end:Menu link-->
-                </div>
-                <!--end:Menu item-->
+                @if(
+                    $user->hasPermissionTo('category_management_read') ||
+                    $user->hasPermissionTo('item_management_read') ||
+                    $user->hasPermissionTo('location_management_read') ||
+                    $user->hasPermissionTo('vendor_management_read')
+                )
+                    <!--begin:Menu item-->
+                    <div class="menu-item pt-5">
+                        <!--begin:Menu content-->
+                        <div class="menu-content">
+                            <span class="menu-heading fw-bold text-uppercase fs-7">Settings</span>
+                        </div>
+                        <!--end:Menu content-->
+                    </div>
+                    <!--end:Menu item-->
 
-                <!--begin:Menu item-->
-                <div class="menu-item">
-                    <!--begin:Menu link-->
-                    <a class="menu-link @yield('items.index')" href="{{route('items.index')}}">
-                        <span class="menu-icon">
-                            <!--begin::Svg Icon-->
-                            <i class="fa-solid fa-shapes text-white fs-6"></i>
-                            <!--end::Svg Icon-->
-                        </span>
-                        <span class="menu-title">Item</span>
-                    </a>
-                    <!--end:Menu link-->
-                </div>
-                <!--end:Menu item-->
+                    @if($user->hasPermissionTo('category_management_read'))
+                        <!--begin:Menu item-->
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link @yield('categories.index')" href="{{route('categories.index')}}">
+                                <span class="menu-icon">
+                                    <!--begin::Svg Icon-->
+                                    <i class="fa-solid fa-network-wired text-white fs-6"></i>
+                                    <!--end::Svg Icon-->
+                                </span>
+                                <span class="menu-title">Category</span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+                        <!--end:Menu item-->
+                    @endif
 
-                <!--begin:Menu item-->
-                <div class="menu-item">
-                    <!--begin:Menu link-->
-                    <a class="menu-link @yield('locations.index')" href="{{route('locations.index')}}">
+                    @if($user->hasPermissionTo('item_management_read'))
+                        <!--begin:Menu item-->
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link @yield('items.index')" href="{{route('items.index')}}">
+                                <span class="menu-icon">
+                                    <!--begin::Svg Icon-->
+                                    <i class="fa-solid fa-shapes text-white fs-6"></i>
+                                    <!--end::Svg Icon-->
+                                </span>
+                                <span class="menu-title">Item</span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+                        <!--end:Menu item-->
+                    @endif
+
+                    @if($user->hasPermissionTo('location_management_read'))
+                        <!--begin:Menu item-->
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link @yield('locations.index')" href="{{route('locations.index')}}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon-->
                             <i class="fa-solid fa-location-crosshairs text-white fs-6"></i>
                             <!--end::Svg Icon-->
                         </span>
-                        <span class="menu-title">Location</span>
-                    </a>
-                    <!--end:Menu link-->
-                </div>
-                <!--end:Menu item-->
+                                <span class="menu-title">Location</span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+                        <!--end:Menu item-->
+                    @endif
 
-                <!--begin:Menu item-->
-                <div class="menu-item">
-                    <!--begin:Menu link-->
-                    <a class="menu-link @yield('vendors.index')" href="{{route('vendors.index')}}">
+                    @if($user->hasPermissionTo('vendor_management_read'))
+                        <!--begin:Menu item-->
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link @yield('vendors.index')" href="{{route('vendors.index')}}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon-->
                             <i class="fa-solid fa-industry text-white fs-6"></i>
                             <!--end::Svg Icon-->
                         </span>
-                        <span class="menu-title">Vendor</span>
-                    </a>
-                    <!--end:Menu link-->
-                </div>
-                <!--end:Menu item-->
+                                <span class="menu-title">Vendor</span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+                        <!--end:Menu item-->
+                    @endif
+                @endif
 
-                <!--begin:Menu item-->
-                <div class="menu-item pt-5">
-                    <!--begin:Menu content-->
-                    <div class="menu-content">
-                        <span class="menu-heading fw-bold text-uppercase fs-7">System Settings</span>
+                @if(
+                    $user->hasPermissionTo('permission_management_read') ||
+                    $user->hasPermissionTo('role_management_read') ||
+                    $user->hasPermissionTo('user_management_read')
+                )
+                    <!--begin:Menu item-->
+                    <div class="menu-item pt-5">
+                        <!--begin:Menu content-->
+                        <div class="menu-content">
+                            <span class="menu-heading fw-bold text-uppercase fs-7">System Settings</span>
+                        </div>
+                        <!--end:Menu content-->
                     </div>
-                    <!--end:Menu content-->
-                </div>
-                <!--end:Menu item-->
+                    <!--end:Menu item-->
 
-                <!--begin:Menu item-->
-                <div class="menu-item">
-                    <!--begin:Menu link-->
-                    <a class="menu-link @yield('permissions.index')" href="{{route('permissions.index')}}">
+
+                    @if($user->hasPermissionTo('permission_management_read'))
+                        <!--begin:Menu item-->
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link @yield('permissions.index')" href="{{route('permissions.index')}}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon-->
                             <i class="fa-solid fa-shield-halved text-white fs-6"></i>
                             <!--end::Svg Icon-->
                         </span>
-                        <span class="menu-title">Permission Management</span>
-                    </a>
-                    <!--end:Menu link-->
-                </div>
-                <!--end:Menu item-->
+                                <span class="menu-title">Permission Management</span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+                        <!--end:Menu item-->
+                    @endif
 
-                <!--begin:Menu item-->
-                <div class="menu-item">
-                    <!--begin:Menu link-->
-                    <a class="menu-link @yield('roles.index')" href="{{route('roles.index')}}">
+                    @if($user->hasPermissionTo('role_management_read'))
+                        <!--begin:Menu item-->
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link @yield('roles.index')" href="{{route('roles.index')}}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon-->
                             <i class="fa-solid fa-diagram-project text-white fs-6"></i>
                             <!--end::Svg Icon-->
                         </span>
-                        <span class="menu-title">Roles Management</span>
-                    </a>
-                    <!--end:Menu link-->
-                </div>
-                <!--end:Menu item-->
-
-                <!--begin:Menu item-->
-                <div class="menu-item">
-                    <!--begin:Menu link-->
-                    <a class="menu-link @yield('users.index')" href="{{route('users.index')}}">
+                                <span class="menu-title">Roles Management</span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+                    @endif
+                    <!--end:Menu item-->
+                    @if($user->hasPermissionTo('user_management_read'))
+                        <!--begin:Menu item-->
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link @yield('users.index')" href="{{route('users.index')}}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon-->
                             <i class="fa-solid fa-users text-white fs-6"></i>
                             <!--end::Svg Icon-->
                         </span>
-                        <span class="menu-title">User Management</span>
-                    </a>
-                    <!--end:Menu link-->
-                </div>
-                <!--end:Menu item-->
+                                <span class="menu-title">User Management</span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+                        <!--end:Menu item-->
+                    @endif
+                @endif
             </div>
             <!--end::Menu-->
         </div>
@@ -247,3 +313,4 @@
     </div>
     <!--end::sidebar menu-->
 </div>
+

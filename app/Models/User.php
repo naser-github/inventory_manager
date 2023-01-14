@@ -49,4 +49,6 @@ class User extends Authenticatable
     {
         return $this->hasOne(UserProfile::class, 'user_id','id');
     }
+
+
 }

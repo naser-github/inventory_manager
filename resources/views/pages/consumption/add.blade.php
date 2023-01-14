@@ -1,16 +1,20 @@
 @extends('layouts.master')
 
-@section('inventory.index')
+@section('consumption')
+    hover show
+@endsection
+
+@section('consumption.add')
     active
 @stop
 
 @section('breadcrumb_navigation_title')
-    Inventory
+    Consumption
 @endsection
 
 @section('breadcrumb_navigation_path')
     <!--begin::Item-->
-    <li class="breadcrumb-item text-muted">Inventory</li>
+    <li class="breadcrumb-item text-muted">Consumption</li>
     <!--end::Item-->
 @endsection
 
@@ -19,50 +23,40 @@
 @endsection
 
 @section('page_content')
-    <div class="card card-flush shadow-sm">
-        <div class="card-body py-5">
-            <form role="form" method="GET">
-                @csrf
-                <div class="row">
-                    {{--Locaiton--}}
-                    <div class="col-lg-4">
-                        <label for="location" class="form-label required">Location</label>
-                        <select id="location" name="location" class="form-select"
-                                aria-label="Assign a location" required>
-                            <option disabled>Assign a Location</option>
-                            @foreach($locations as $location)
-                                <option value="{{ $location->id }}">
-                                    {{ $location->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('location')
-                        <span class="text-danger m-0 p-0" role="alert">{{$errors->first('location')}}</span>
-                        @enderror
-                    </div>
 
-                    {{--Date--}}
-                    <div class="col-lg-4">
-                        <label class="form-label required">Date</label>
-                        <input class="form-control" placeholder="Pick a date"
-                               id="date" name="date" required/>
-                        @error('date')
-                        <span class="text-danger m-0 p-0" role="alert">{{$errors->first('date')}}</span>
-                        @enderror
-                    </div>
+{{--    <div class="card card-flush shadow-sm">--}}
+{{--        <div class="card-body py-5">--}}
+{{--            <form role="form" method="GET">--}}
+{{--                @csrf--}}
+{{--                <div class="row">--}}
+{{--                    --}}{{--Locaiton--}}
+{{--                    <div class="col-md-4">--}}
+{{--                        <label for="location" class="form-label required">Location</label>--}}
+{{--                        <select id="location" name="location" class="form-select"--}}
+{{--                                aria-label="Assign a location" required>--}}
+{{--                            <option disabled>Assign a Location</option>--}}
+{{--                            @foreach($locations as $location)--}}
+{{--                                <option value="{{ $location->id }}">--}}
+{{--                                    {{ $location->name }}--}}
+{{--                                </option>--}}
+{{--                            @endforeach--}}
+{{--                        </select>--}}
+{{--                        @error('location')--}}
+{{--                        <span class="text-danger m-0 p-0" role="alert">{{$errors->first('location')}}</span>--}}
+{{--                        @enderror--}}
+{{--                    </div>--}}
 
-                    <div class="col-lg-2 mt-8">
-                        <button type="submit" class="btn btn-info hover-scale">
-                            <i class="fa-solid fa-filter fs-6"></i>Filter
-                        </button>
-                    </div>
-                </div>
+{{--                    <div class="col-md-4 mt-8">--}}
+{{--                        <button type="submit" class="btn btn-info hover-scale">--}}
+{{--                            <i class="fa-solid fa-filter fs-1"></i>Filter--}}
+{{--                        </button>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </form>--}}
+{{--        </div>--}}
+{{--    </div>--}}
 
-            </form>
-        </div>
-    </div>
-
-    <div class="card my-6">
+    <div class="card mt-4">
         <!--begin::Card header-->
         <div class="card-header border-0 pt-6">
             <!--begin::Card title-->
@@ -84,7 +78,8 @@
                     </span>
                     <!--end::Svg Icon-->
                     <input id="searchInput" type="text" data-kt-user-table-filter="search"
-                           class="form-control form-control-solid w-250px ps-14" placeholder="Search inventory items"/>
+                           class="form-control form-control-solid w-250px ps-14"
+                           placeholder="Search item"/>
                 </div>
                 <!--end::Search-->
             </div>
@@ -94,12 +89,13 @@
         <!--begin::Card body-->
         <div class="card-body py-4">
             <!--begin::Table-->
-            <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_inventory">
+            <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_purchase_inbound">
                 <!--begin::Table head-->
                 <thead>
                 <!--begin::Table row-->
                 <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
-                    <th class="min-w-125px">Item Name</th>
+                    <th class="min-w-125px">Name</th>
+                    <th class="min-w-125px">Unit</th>
                     <th class="min-w-125px">Quantity</th>
                 </tr>
                 <!--end::Table row-->
@@ -107,16 +103,15 @@
                 <!--end::Table head-->
                 <!--begin::Table body-->
                 <tbody class="text-gray-600 fw-semibold">
-                @foreach($inventory as $inventoryItem)
+                @foreach($items as $item)
                     <!--begin::Table row-->
                     <tr>
-                        <td>
-                            {{$inventoryItem->item?$inventoryItem->item->name:$inventoryItem->stock->item->name}}
-                        </td>
+                        <td>{{$item->item->name}}</td>
 
-                        <td>
-                            {{$inventoryItem->quantity}}
-                        </td>
+                        <td><span class="badge badge-light-info">{{$item->item->unit}}</span></td>
+
+                        <td>{{$item->quantity}}</td>
+
                     </tr>
                     <!--end::Table row-->
                 @endforeach
@@ -133,28 +128,14 @@
 @section('page_scripts')
     <!--begin::Vendors Javascript(used for this page only)-->
     <script src="{{asset('assets/plugins/custom/datatables/datatables.bundle.js')}}"></script>
-    <script src="{{asset('assets/plugins/custom/formrepeater/formrepeater.bundle.js')}}"></script>
     <!--end::Vendors Javascript-->
 
     <script>
-        const table = $('#kt_table_inventory').DataTable();
+        const table = $('#kt_table_consumption').DataTable();
 
         // #searchInput is a <input type="text"> element
         $('#searchInput').on('keyup', function () {
             table.search(this.value).draw();
         });
-    </script>
-
-    // date picker
-    <script>
-
-        $("#date").daterangepicker({
-                singleDatePicker: true,
-                showDropdowns: true,
-                maxDate: new Date(),
-                minYear: 1901,
-                maxYear: parseInt(moment().format("YYYY"), 12)
-            },
-        );
     </script>
 @endsection

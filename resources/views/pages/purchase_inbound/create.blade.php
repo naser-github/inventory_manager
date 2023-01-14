@@ -26,7 +26,7 @@
 @endsection
 
 @section('page_content')
-    <form role="form" method="POST" action="{{ route('purchase_inbound.store') }}">
+    <form id="purchase_inbound_form" role="form" method="POST" action="{{ route('purchase_inbound.store') }}">
         @csrf
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -112,33 +112,33 @@
                                     </div>
                                     <div class="col-md-2">
                                         <label class="form-label required">Quantity</label>
-                                        <input type="number" step="any" id="quantity" name="quantity"
-                                               onclick="calculate()"
+                                        <input type="number" step="any" id="item_quantity" name="quantity"
+                                               oninput="calculate()"
                                                class="form-control" required/>
                                     </div>
                                     <div class="col-md-2">
                                         <label class="form-label required">Unit Price</label>
-                                        <input type="number" step="any" id="unit_price" name="unit_price"
+                                        <input type="number" step="any" id="item_unit_price" name="unit_price"
                                                class="form-control" required/>
                                     </div>
                                     <div class="col-md-2">
                                         <label class="form-label">Sub Total</label>
-                                        <input type="number" step="any" id="sub_total" name="sub_total"
+                                        <input type="number" step="any" id="item_sub_total" name="sub_total"
                                                class="form-control" required/>
                                     </div>
                                     <div class="col-md-1">
                                         <label class="form-label">Vat</label>
-                                        <input type="number" step="any" id="vat" name="vat"
+                                        <input type="number" step="any" id="item_vat" name="vat"
                                                class="form-control" required/>
                                     </div>
                                     <div class="col-md-2">
                                         <label class="form-label">Total</label>
-                                        <input type="number" step="any" id="total" name="total"
+                                        <input type="number" step="any" id="item_total" name="total"
                                                class="form-control" required/>
                                     </div>
                                     <div class="col-md-1">
                                         <label class="form-label">Remark</label>
-                                        <input type="text" id="remark" name="remark"
+                                        <input type="text" id="item_remark" name="remark"
                                                class="form-control" required/>
                                     </div>
                                 </div>
@@ -182,7 +182,7 @@
 
                 </div>
                 <div class="d-flex justify-content-end">
-                    <button type="submit" class="btn btn-info">Purchase</button>
+                    <button type="submit" id="submit_purchase" class="btn btn-info">Purchase</button>
                 </div>
             </div>
         </div>
@@ -193,6 +193,7 @@
 @section('page_scripts')
     <script src="{{asset('assets/plugins/custom/formrepeater/formrepeater.bundle.js')}}"></script>
 
+    <!--begin::Date Picker-->
     <script>
         $("#raised_date").daterangepicker({
                 singleDatePicker: true,
@@ -206,7 +207,9 @@
             }
         );
     </script>
+    <!--End::Date Picker-->
 
+    <!--begin::repeater-->
     <script>
         $('#purchase_inbound_items').repeater({
             initEmpty: false,
@@ -232,19 +235,52 @@
             }
         });
     </script>
+    <!--End::repeater-->
+
+    <!--begin::Sweet Alert-->
+    {{--    <script>--}}
+    {{--        const button = document.getElementById('submit_purchase');--}}
+
+    {{--        button.addEventListener('click', e => {--}}
+    {{--            e.preventDefault();--}}
+
+    {{--            Swal.fire({--}}
+    {{--                html: `A SweetAlert content with <strong>bold text</strong>, <a href="#">links</a>--}}
+    {{--             or any of our available <span class="badge badge-primary">components</span>`,--}}
+    {{--                icon: "info",--}}
+    {{--                buttonsStyling: false,--}}
+    {{--                showCancelButton: true,--}}
+    {{--                confirmButtonText: "Ok, got it!",--}}
+    {{--                cancelButtonText: 'Nope, cancel it',--}}
+    {{--                customClass: {--}}
+    {{--                    confirmButton: "btn btn-primary",--}}
+    {{--                    cancelButton: 'btn btn-danger'--}}
+    {{--                }--}}
+    {{--            }).then((result) => {--}}
+    {{--                if (result.isConfirmed) {--}}
+    {{--                    $('#purchase_inbound_form').submit();--}}
+    {{--                }--}}
+    {{--            })--}}
+    {{--        });--}}
+    {{--    </script>--}}
+    <!--End::Sweet Alert-->
 
     <script>
-        function calculate() {
-            // const quantity = document.getElementById('#quantity');
-            console.log($('#quantity'))
-        }
-
-        // function () {
-        //     const quantity = document.getElementById('#quantity');
-        //     const unit_price = document.getElementById('#unit_price');
+        /* event listener */
+        // document.getElementById("item_quantity")[0].addEventListener('change', update());
         //
-        //     console.log("quantity", quantity, 'unit_price',)
+        // /* function */
+        // function update() {
+        //
+        //     console.log('fuck')
+        //     document.getElementById("item_sub_total").value = 0;
+        //     return 0;
         // }
+
+        function calculate(){
+            console.log('fuck');
+            document.getElementById("item_sub_total").value = document.getElementById("item_quantity").value;
+        }
 
     </script>
 @endsection

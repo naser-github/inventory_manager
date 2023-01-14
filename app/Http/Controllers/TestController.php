@@ -7,7 +7,7 @@ use Spatie\Permission\Models\Role;
 
 class TestController extends Controller
 {
-    public function test(){
-        return Role::all('id','name');
-    }
+//    public function test(){
+//        return Role::all('id','name');
+//    }
 }

@@ -117,11 +117,11 @@
                                 class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary  fw-semibold fs-7 w-125px py-4"
                                 data-kt-menu="true">
                                 <!--begin::Menu item-->
-{{--                                <div class="menu-item px-3">--}}
-{{--                                    <a href="{{route('purchase_inbound.show', $item->id)}}" class="menu-link px-3">--}}
-{{--                                        <i class="fa-regular fa-pen-to-square me-2"></i> Edit--}}
-{{--                                    </a>--}}
-{{--                                </div>--}}
+                                {{--                                <div class="menu-item px-3">--}}
+                                {{--                                    <a href="{{route('purchase_inbound.show', $item->id)}}" class="menu-link px-3">--}}
+                                {{--                                        <i class="fa-regular fa-pen-to-square me-2"></i> Edit--}}
+                                {{--                                    </a>--}}
+                                {{--                                </div>--}}
                                 <!--end::Menu item-->
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">
@@ -152,6 +152,7 @@
     <script src="{{asset('assets/plugins/custom/datatables/datatables.bundle.js')}}"></script>
     <!--end::Vendors Javascript-->
 
+    <!--begin::Datatable-->
     <script>
         const table = $('#kt_table_purchase_inbound').DataTable();
 
@@ -160,4 +161,5 @@
             table.search(this.value).draw();
         });
     </script>
+    <!--End::Datatable-->
 @endsection

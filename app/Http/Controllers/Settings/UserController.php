@@ -12,6 +12,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
@@ -20,6 +21,13 @@ use function Symfony\Component\String\u;
 
 class UserController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('permission:user_management_read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:user_management_write', ['only' => ['create', 'store', 'edit', 'update', 'destroy']]);
+    }
+
 
     /**
      * @param UserService $userService
@@ -76,7 +84,7 @@ class UserController extends Controller
         $user = $userService->findByIdWPR($id);
 
         if ($user) {
-            return view('pages.settings.user.show', compact( 'user'));
+            return view('pages.settings.user.show', compact('user'));
         } else {
             Session::flash('error', 'No User Found');
             return redirect()->back();
