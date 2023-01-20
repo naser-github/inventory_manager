@@ -4,13 +4,14 @@ namespace App\Http\Controllers\Consumption;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Common\FilterbyDateAndLocation;
+use App\Http\Requests\Consumption\ConsumptionStoreRequest;
 use App\Http\Services\Consumption\ConsumptionService;
 use App\Http\Services\setting\LocationService;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ConsumptionController extends Controller
 {
@@ -40,7 +41,25 @@ class ConsumptionController extends Controller
     {
         $items = $consumptionService->add();
 
-        return view('pages.consumption.add',compact('items'));
+        return view('pages.consumption.add', compact('items'));
+    }
+
+    public function store(ConsumptionStoreRequest $request, ConsumptionService $consumptionService)
+    {
+        $validated = $request->validated();
+
+        DB::beginTransaction();
+        try {
+            $consumptionService->store($validated);
+            $message = $consumptionService->updateStock($validated);
+            if ($message) return redirect()->back()->with('error', $message);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            return redirect()->back()->with('error', 'Process failed try again!!');
+        }
+
+        return redirect()->back()->with('success', 'Consumption Successful');
     }
 
 

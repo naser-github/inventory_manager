@@ -154,7 +154,9 @@
 
     <!--begin::Datatable-->
     <script>
-        const table = $('#kt_table_purchase_inbound').DataTable();
+        const table = $('#kt_table_purchase_inbound').DataTable({
+            order:[]
+        });
 
         // #searchInput is a <input type="text"> element
         $('#searchInput').on('keyup', function () {

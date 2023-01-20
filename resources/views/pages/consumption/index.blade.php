@@ -36,7 +36,8 @@
                                 aria-label="Assign a location" required>
                             <option disabled>Assign a Location</option>
                             @foreach($locations as $location)
-                                <option value="{{ $location->id }}">
+                                <option
+                                    {{ request()->get('location') == $location->id ? "selected" : "" }} value="{{ $location->id }}">
                                     {{ $location->name }}
                                 </option>
                             @endforeach
@@ -122,10 +123,9 @@
 
                         <td><span class="badge badge-light-info">{{$item->item->unit}}</span></td>
 
-                        <td>{{$item->quantity}}</td>
-
                         <td>{{$item->consumption_date}}</td>
 
+                        <td>{{$item->quantity}}</td>
                     </tr>
                     <!--end::Table row-->
                 @endforeach
@@ -156,8 +156,15 @@
 
     {{--date picker--}}
     <script>
-        const start = moment().subtract(29, "days");
-        const end = moment();
+
+        const maxDate = new Date();
+
+        const queryString = window.location.search; // get url parameter
+        const dateParam = new URLSearchParams(queryString).get('date'); // get date value from the parameter
+        const dateArray = dateParam != null ? dateParam.split(" - ") : null;
+
+        const start = dateArray != null ? moment(dateArray[0]) : moment().subtract(29, "days");
+        const end = dateArray != null ? moment(dateArray[1]) : moment();
 
         function cb(start, end) {
             $("#date").html(start.format("MMMM D, YYYY") + " - " + end.format("MMMM D, YYYY"));
@@ -174,7 +181,7 @@
                 "This Month": [moment().startOf("month"), moment().endOf("month")],
                 "Last Month": [moment().subtract(1, "month").startOf("month"), moment().subtract(1, "month").endOf("month")]
             },
-            maxDate: new Date(),
+            maxDate: maxDate,
         }, cb);
 
         cb(start, end);

@@ -16,7 +16,7 @@ class PurchaseInboundService
      */
     public function index(): Collection|array
     {
-        return PurchaseInbound::query()->with('vendor')->get();
+        return PurchaseInbound::query()->with('vendor')->orderBy('id','DESC')->get();
     }
 
     /**

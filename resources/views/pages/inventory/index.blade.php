@@ -31,7 +31,7 @@
                                 aria-label="Assign a location" required>
                             <option disabled>Assign a Location</option>
                             @foreach($locations as $location)
-                                <option value="{{ $location->id }}">
+                                <option {{ request()->get('location') == $location->id ? "selected" : "" }} value="{{ $location->id }}">
                                     {{ $location->name }}
                                 </option>
                             @endforeach
@@ -133,7 +133,6 @@
 @section('page_scripts')
     <!--begin::Vendors Javascript(used for this page only)-->
     <script src="{{asset('assets/plugins/custom/datatables/datatables.bundle.js')}}"></script>
-    <script src="{{asset('assets/plugins/custom/formrepeater/formrepeater.bundle.js')}}"></script>
     <!--end::Vendors Javascript-->
 
     <script>
@@ -148,13 +147,20 @@
     // date picker
     <script>
 
+        const queryString = window.location.search; // get url parameter
+        const dateParam = new URLSearchParams(queryString).get('date'); // get date value from the parameter
+
+        const maxDate = new Date();
+
         $("#date").daterangepicker({
                 singleDatePicker: true,
                 showDropdowns: true,
-                maxDate: new Date(),
-                minYear: 1901,
-                maxYear: parseInt(moment().format("YYYY"), 12)
-            },
+                autoApply: true,
+                maxDate: maxDate,
+                minYear: 2023,
+                maxYear: parseInt(moment().format("YYYY"), 12),
+                startDate: dateParam != null ? dateParam : maxDate,
+            }
         );
     </script>
 @endsection

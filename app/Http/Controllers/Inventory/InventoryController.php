@@ -28,12 +28,13 @@ class InventoryController extends Controller
             $date = date('Y-m-d', strtotime($validated['date']));
 
             if (strtotime($current_date) > strtotime($date)) {
-                $inventory = $inventoryService->history($date);
-            } else $inventory = $inventoryService->index();
+                $inventory = $inventoryService->history($date, $validated['location']);
+            } else $inventory = $inventoryService->index($validated['location']);
 
-        } else $inventory = $inventoryService->index();
+        } else $inventory = array();
+
         $locations = $locationService->locationList();
 
-        return view('pages.inventory.index', compact( 'inventory', 'locations'));
+        return view('pages.inventory.index', compact('inventory', 'locations'));
     }
 }
