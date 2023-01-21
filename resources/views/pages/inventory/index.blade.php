@@ -31,7 +31,8 @@
                                 aria-label="Assign a location" required>
                             <option disabled>Assign a Location</option>
                             @foreach($locations as $location)
-                                <option {{ request()->get('location') == $location->id ? "selected" : "" }} value="{{ $location->id }}">
+                                <option
+                                    {{ request()->get('location') == $location->id ? "selected" : "" }} value="{{ $location->id }}">
                                     {{ $location->name }}
                                 </option>
                             @endforeach
@@ -144,7 +145,7 @@
         });
     </script>
 
-    // date picker
+    {{--date picker--}}
     <script>
 
         const queryString = window.location.search; // get url parameter

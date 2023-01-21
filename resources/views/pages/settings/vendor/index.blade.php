@@ -71,6 +71,7 @@
                 <!--begin::Table row-->
                 <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
                     <th class="min-w-125px">Name</th>
+                    <th class="min-w-125px">Phone</th>
                     <th class="min-w-125px">Status</th>
                     <th class="text-end min-w-100px">Actions</th>
                 </tr>
@@ -85,9 +86,13 @@
 
                         <!--begin::Name-->
                         <td>{{$vendor->name}}</td>
-                        <!--end::Name=-->
+                        <!--end::Name-->
 
-                        <!--begin::Status=-->
+                        <!--begin::phone-->
+                        <td>{{$vendor->phone_number}}</td>
+                        <!--end::phone-->
+
+                        <!--begin::Status-->
                         <td>
                             <span style="display: none">{{$vendor->status}}</span>
                             @if( $vendor->status==1)
@@ -215,6 +220,7 @@
                 }
             });
         }
+
         // END::Edit Modal
     </script>
 @endsection

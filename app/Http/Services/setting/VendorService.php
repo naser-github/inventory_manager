@@ -34,6 +34,8 @@ class VendorService
     {
         $vendor = new Vendor();
         $vendor->name = $payload['name'];
+        $vendor->phone_number = $payload['phone'];
+        $vendor->address = $payload['address'];
         $vendor->status = $payload['status'];
         $vendor->save();
     }
@@ -46,6 +48,8 @@ class VendorService
     public function update($vendor, $payload): void
     {
         $vendor->name = $payload['name'];
+        $vendor->phone_number = $payload['phone'];
+        $vendor->address = $payload['address'];
         $vendor->status = $payload['status'];
         $vendor->save();
     }

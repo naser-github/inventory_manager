@@ -14,6 +14,7 @@ return new class extends Migration {
     {
         Schema::create('consumptions', function (Blueprint $table) {
             $table->id();
+            $table->string('consume_by');
             $table->date('consumption_date');
             $table->foreignId('item_id')->constrained('items');
             $table->double('quantity', 8, 2);

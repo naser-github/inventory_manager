@@ -42,7 +42,7 @@
                 <div class="row mb-4">
                     <div class="col-md-3">
                         <div class="mb-0">
-                            <label class="form-label required">Raised Date</label>
+                            <label for="raised_date" class="form-label required">Raised Date</label>
                             <input class="form-control" placeholder="Pick raised date"
                                    id="raised_date" name="raised_date" required/>
                         </div>
@@ -50,14 +50,14 @@
 
                     <div class="col-md-3">
                         <div class="mb-0">
-                            <label class="form-label required">Reference Number</label>
+                            <label for="reference_invoice_number" class="form-label required">Reference Number</label>
                             <input type="text" class="form-control" placeholder="Invoice Number"
                                    id="reference_invoice_number" name="reference_invoice_number" required/>
                         </div>
                     </div>
 
                     <div class="col-md-3">
-                        <label class="form-label required">Vendor</label>
+                        <label for="vendor_id" class="form-label required">Vendor</label>
                         <select id="vendor_id" name="vendor_id" class="form-select" data-control="select2"
                                 data-placeholder="Select a vendor" required>
                             <option></option>
@@ -68,7 +68,7 @@
                     </div>
 
                     <div class="col-md-3">
-                        <label class="form-label required">Location</label>
+                        <label for="location_id" class="form-label required">Location</label>
                         <select id="location_id" name="location_id" class="form-select" data-control="select2"
                                 data-placeholder="Select a location" required>
                             <option></option>
@@ -96,10 +96,11 @@
                     <!--end::Form group-->
 
                     <!--begin::Form group-->
-                    <div class="form-group purchase">
+                    <div class="form-group">
                         <div data-repeater-list="purchase_inbound_items">
                             <div data-repeater-item>
                                 <div class="form-group row mb-5">
+
                                     <div class="col-md-2">
                                         <label class="form-label required">Select an Item</label>
                                         <select name="item_id" class="form-select" data-kt-repeater="select2"
@@ -110,31 +111,37 @@
                                             @endforeach
                                         </select>
                                     </div>
+
                                     <div class="col-md-2">
-                                        <label class="form-label required">Quantity</label>
-                                        <input type="number" step="any" id="item_quantity" name="quantity"
+                                        <label for="item_quantity" class="form-label required">Quantity</label>
+                                        <input type="number" step="any" id="item_quantity" name="quantity" oninput="updateFunction()"
                                                class="form-control" required/>
                                     </div>
+
                                     <div class="col-md-2">
                                         <label class="form-label required">Unit Price</label>
                                         <input type="number" step="any" id="item_unit_price" name="unit_price"
                                                class="form-control" required/>
                                     </div>
+
                                     <div class="col-md-2">
                                         <label class="form-label">Sub Total</label>
                                         <input type="number" step="any" id="item_sub_total" name="sub_total"
                                                class="form-control" required/>
                                     </div>
+
                                     <div class="col-md-1">
                                         <label class="form-label">Vat</label>
                                         <input type="number" step="any" id="item_vat" name="vat"
                                                class="form-control" required/>
                                     </div>
+
                                     <div class="col-md-2">
                                         <label class="form-label">Total</label>
                                         <input type="number" step="any" id="item_total" name="total"
                                                class="form-control" required/>
                                     </div>
+
                                     <div class="col-md-1">
                                         <label class="form-label">Remark</label>
                                         <input type="text" id="item_remark" name="remark"
@@ -146,6 +153,8 @@
                     </div>
                     <!--end::Form group-->
 
+
+
                 </div>
                 <!--end::Repeater-->
             </div>
@@ -154,7 +163,7 @@
                 <div class="row">
                     {{--sub total--}}
                     <div class="d-flex justify-content-end align-items-center col-md-9 mb-4 me-4">
-                        <label class="form-label">Sub Total</label>
+                        <label for="sub_total" class="form-label">Sub Total</label>
                     </div>
                     <div class="col-md-2 mb-4">
                         <input type="number" step="any" id="sub_total" name="sub_total"
@@ -163,7 +172,7 @@
 
                     {{--others--}}
                     <div class="d-flex justify-content-end align-items-center col-md-9 mb-4 me-4">
-                        <label class="form-label">Others</label>
+                        <label for="others" class="form-label">Others</label>
                     </div>
                     <div class="col-md-2 mb-4">
                         <input type="number" step="any" id="others" name="others"
@@ -172,7 +181,7 @@
 
                     {{--total--}}
                     <div class="d-flex justify-content-end align-items-center col-md-9 mb-4 me-4">
-                        <label class="form-label">Total</label>
+                        <label for="total" class="form-label">Total</label>
                     </div>
                     <div class="col-md-2 mb-4">
                         <input type="number" step="any" id="total" name="total"
@@ -197,12 +206,9 @@
         $("#raised_date").daterangepicker({
                 singleDatePicker: true,
                 showDropdowns: true,
+                autoApply: true,
                 minYear: 1901,
                 maxYear: parseInt(moment().format("YYYY"), 12)
-            },
-            function (start, end, label) {
-                var years = moment().diff(start, "years");
-                alert("You are " + years + " years old!");
             }
         );
     </script>
@@ -210,7 +216,7 @@
 
     <!--begin::repeater-->
     <script>
-        $('#purchase_inbound_items').repeater({
+        $('#purchase_inbound_form').repeater({
             initEmpty: false,
 
             defaultValues: {
@@ -233,6 +239,10 @@
                 $('[data-kt-repeater="select2"]').select2();
             }
         });
+
+        function updateFunction(){
+            console.log(document.getElementById("item_quantity"))
+        }
     </script>
     <!--End::repeater-->
 @endsection

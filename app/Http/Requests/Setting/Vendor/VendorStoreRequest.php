@@ -25,6 +25,8 @@ class VendorStoreRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'unique:vendors'],
+            'phone' => ['bail', 'nullable', 'regex:/(01)[0-9]{9}$/', 'unique:vendors,phone_number'],
+            'address' => ['bail', 'nullable'],
             'status' => ['required', 'boolean'],
         ];
     }

@@ -28,6 +28,27 @@
                     @enderror
                 </div>
 
+                {{--phone--}}
+                <div class="col-12 mb-6">
+                    <label for="phone" class="form-label">Phone</label>
+                    <input type="text" id="phone" name="phone" class="form-control" placeholder="Phone" required
+                           value="{{ $vendor->phone_number }}"
+                    />
+                    @error('phone')
+                    <span class="text-danger m-0 p-0" role="alert">{{$errors->first('phone')}}</span>
+                    @enderror
+                </div>
+
+                {{--Address--}}
+                <div class="col-12 mb-6">
+                    <label for="address" class="required form-label">Address</label>
+                    <textarea class="form-control" id="address" name="address"
+                              placeholder="Address">{{ $vendor->address }}</textarea>
+                    @error('address')
+                    <span class="text-danger m-0 p-0" role="alert">{{$errors->first('address')}}</span>
+                    @enderror
+                </div>
+
                 {{--Status--}}
                 <div class="col-sm-12 mb-6">
                     <label for="status" class="required form-label">Select a status</label>

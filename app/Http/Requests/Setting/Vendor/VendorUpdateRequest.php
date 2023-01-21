@@ -27,6 +27,8 @@ class VendorUpdateRequest extends FormRequest
         return [
             'id' => ['required', 'integer'],
             'name' => ['required', 'string', Rule::unique('vendors')->ignore($this->id)],
+            'phone' => ['bail', 'nullable', 'regex:/(01)[0-9]{9}$/', 'unique:vendors,phone_number'],
+            'address' => ['bail', 'nullable'],
             'status' => ['required', 'boolean'],
         ];
     }
