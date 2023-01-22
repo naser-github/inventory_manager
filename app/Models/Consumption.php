@@ -12,6 +12,10 @@ class Consumption extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'consumption_date', 'item_id', 'quantity', 'received_by', 'location_id', 'user_id',
+    ];
+
     public function item(): BelongsTo
     {
         return $this->belongsTo(Item::class, 'item_id', 'id');

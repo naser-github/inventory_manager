@@ -6,12 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Common\FilterbyDateAndLocation;
 use App\Http\Requests\Consumption\ConsumptionStoreRequest;
 use App\Http\Services\Consumption\ConsumptionService;
+use App\Http\Services\Inventory\InventoryService;
 use App\Http\Services\setting\LocationService;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class ConsumptionController extends Controller
 {
@@ -37,11 +40,27 @@ class ConsumptionController extends Controller
         return view('pages.consumption.index', compact('consumptions', 'locations'));
     }
 
-    public function add(ConsumptionService $consumptionService)
+    /**
+     * @param LocationService $locationService
+     * @return Factory|View|Application
+     */
+    public function add(LocationService $locationService): Factory|View|Application
     {
-        $items = $consumptionService->add();
+        $locations = $locationService->locationList();
 
-        return view('pages.consumption.add', compact('items'));
+        return view('pages.consumption.add', compact('locations'));
+    }
+
+    public function consumption_portal(Request $request, InventoryService $inventoryService)
+    {
+        $validated = $request->validate([
+            'location_id' => ['required', 'integer', Rule::exists("locations", "id")],
+        ]);
+
+        $location_id = $validated['location_id'];
+        $items = $inventoryService->index($location_id);
+
+        return view('pages.consumption.consumption_portal', compact('items', 'location_id'));
     }
 
     public function store(ConsumptionStoreRequest $request, ConsumptionService $consumptionService)

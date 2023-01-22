@@ -25,12 +25,14 @@ class ConsumptionStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => ['required', 'integer', Rule::exists("stocks", "id")],
-            'item_id' => ['required', 'integer', Rule::exists("items", "id")],
+            'location_id' => ['required', 'integer', Rule::exists("locations", "id")],
+            'name' => ['required', 'string', 'min:2'],
             'consumption_date' => ['required', 'date'],
-            'stock' => ['required', 'numeric'],
-            'consume' => ['required', 'numeric', 'min:0.01'],
-            'location_id' => ['required', 'integer', Rule::exists("kitchen_stations", "id")],
+
+            'consumption_data' => ['required'],
+
+            'consumption_data.*.item_id' => ['required', 'integer', Rule::exists("items", "id")],
+            'consumption_data.*.quantity' => ['required', 'numeric', 'min:0.01'],
         ];
     }
 }

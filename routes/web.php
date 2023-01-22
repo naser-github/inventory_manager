@@ -13,6 +13,7 @@ use App\Http\Controllers\Settings\PermissionController;
 use App\Http\Controllers\Settings\RoleController;
 use App\Http\Controllers\Settings\UserController;
 use App\Http\Controllers\Settings\VendorController;
+use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,9 +28,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-//Route::get('/dashboard', function () {
-//    return view('dashboard');
-//})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/test', [TestController::class, 'test']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -62,6 +61,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/index', [ConsumptionController::class, 'index'])->name('consumption.index');
 
         Route::get('/add', [ConsumptionController::class, 'add'])->name('consumption.add');
+        Route::post('/consumption_portal', [ConsumptionController::class, 'consumption_portal'])->name('consumption.consumption_portal');
         Route::post('/store', [ConsumptionController::class, 'store'])->name('consumption.store');
     });
     // End::Inventory

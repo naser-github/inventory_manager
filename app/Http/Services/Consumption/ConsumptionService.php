@@ -5,6 +5,7 @@ namespace App\Http\Services\Consumption;
 
 use App\Models\Consumption;
 use App\Models\Stock;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class ConsumptionService
@@ -30,29 +31,43 @@ class ConsumptionService
 
     public function store($payload)
     {
-        $consumption = new Consumption();
-        $consumption->consumption_date = $payload['consumption_date'];
-        $consumption->item_id = $payload['item_id'];
-        $consumption->quantity = $payload['consume'];
-        $consumption->location_id = $payload['location_id'];
-        $consumption->user_id = Auth::id();
-        $consumption->save();
+        $consumptionItemsArray = array();
+        $time = Carbon::now();
+        $user_id = Auth::id();
+
+        $consumptionItem['consumption_date'] = date('Y-m-d', strtotime($payload['consumption_date']));
+        $consumptionItem['received_by'] = $payload['name'];
+        $consumptionItem['location_id'] = $payload['location_id'];
+        $consumptionItem['user_id'] = $user_id;
+        $consumptionItem['created_at'] = $time;
+        $consumptionItem['updated_at'] = $time;
+
+        foreach ($payload['consumption_data'] as $item) {
+            $consumptionItem['item_id'] = $item['item_id'];
+            $consumptionItem['quantity'] = $item['quantity'];
+
+            $consumptionItemsArray[] = $consumptionItem;
+        }
+        Consumption::insert($consumptionItemsArray);
     }
 
     public function updateStock($payload)
     {
         $message = null;
 
-        $itemExist = Stock::query()
-            ->where('location_id', $payload['location_id'])
-            ->where('item_id', $payload['item_id'])
-            ->first();
+        foreach ($payload['consumption_data'] as $item) {
+            $itemExist = Stock::query()
+                ->where('location_id', $payload['location_id'])
+                ->where('item_id', $item['item_id'])
+                ->first();
 
-        if ($itemExist && $itemExist->quantity>=$payload['consume']) {
-            $itemExist->quantity -= $payload['consume'];
-            $itemExist->save();
-        }else{
-            $message = 'item quantity is insufficient';
+            if ($itemExist && $itemExist->quantity >= $item['quantity']) {
+                $itemExist->quantity -= $item['quantity'];
+                $itemExist->save();
+            } else {
+                $message = 'item quantity is insufficient';
+                break;
+            }
         }
 
         return $message;
