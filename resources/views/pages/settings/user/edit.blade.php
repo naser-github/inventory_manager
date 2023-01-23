@@ -47,7 +47,7 @@
 
                     {{--First Name--}}
                     <div class="col-sm-12 mb-6">
-                        <label for="name" class="required form-label">First Name</label>
+                        <label for="name" class="required form-label">Name</label>
                         <input type="text" id="name" name="name" class="form-control"
                                placeholder="First Name" required
                                value="{{ $user->name }}"

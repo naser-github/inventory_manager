@@ -63,7 +63,7 @@ class ConsumptionController extends Controller
         return view('pages.consumption.consumption_portal', compact('items', 'location_id'));
     }
 
-    public function store(ConsumptionStoreRequest $request, ConsumptionService $consumptionService)
+    public function store(ConsumptionStoreRequest $request, ConsumptionService $consumptionService): \Illuminate\Http\RedirectResponse
     {
         $validated = $request->validated();
 

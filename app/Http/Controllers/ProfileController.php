@@ -3,58 +3,63 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\User;
+use App\Models\UserProfile;
+use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
+
     /**
-     * Display the user's profile form.
+     * @return Factory|\Illuminate\Contracts\View\View|Application
      */
-    public function edit(Request $request): View
+    public function edit(): Factory|\Illuminate\Contracts\View\View|Application
     {
+        $user = User::query()->where('id', Auth::id())->first();
+
         return view('profile.edit', [
-            'user' => $request->user(),
+            'user' => $user,
         ]);
     }
 
+
     /**
-     * Update the user's profile information.
+     * @param ProfileUpdateRequest $request
+     * @return RedirectResponse
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $validated = $request->validated();
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
+        DB::beginTransaction();
 
-        $request->user()->save();
+//        try {
+            $user = User::query()->where('id', Auth::id())->first();
+            $user->name = $validated['name'];
+            if ($validated['password']) $user->password = Hash::make($validated['password']);
+            $user->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
-    }
+            $user_profile = UserProfile::query()->where('user_id', Auth::id())->first();
+            $user_profile->phone = $validated['phone'];
+            $user_profile->save();
 
-    /**
-     * Delete the user's account.
-     */
-    public function destroy(Request $request): RedirectResponse
-    {
-        $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current-password'],
-        ]);
+            DB::commit();
+//        } catch (Exception $error) {
+//            DB::rollback();
+//            return redirect()->back()->with('error', 'Process failed try again!!');
+//        }
 
-        $user = $request->user();
-
-        Auth::logout();
-
-        $user->delete();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return Redirect::to('/');
+        Session::flash('success', 'Profile has been updated');
+        return Redirect::back();
     }
 }

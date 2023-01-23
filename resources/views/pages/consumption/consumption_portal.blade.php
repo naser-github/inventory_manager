@@ -97,7 +97,6 @@
 
         for (var i = 0; i < select2.length; i++) {
             var item = items.filter(item => item.item.id === Number(select2[i].value))[0]
-            console.log(item);
             stock[i].value = item?.quantity
         }
     }
