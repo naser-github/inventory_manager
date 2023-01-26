@@ -33,6 +33,7 @@ class ConsumptionStoreRequest extends FormRequest
 
             'consumption_data.*.item_id' => ['required', 'integer', Rule::exists("items", "id")],
             'consumption_data.*.quantity' => ['required', 'numeric', 'min:0.01'],
+            'consumption_data.*.unit_price' => ['required', 'numeric', 'min:0.01'],
         ];
     }
 }

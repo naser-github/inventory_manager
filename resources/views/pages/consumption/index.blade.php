@@ -110,6 +110,7 @@
                     <th class="min-w-125px">Unit</th>
                     <th class="min-w-125px">Date</th>
                     <th class="min-w-125px">Quantity</th>
+                    <th class="min-w-125px">Action</th>
                 </tr>
                 <!--end::Table row-->
                 </thead>
@@ -126,6 +127,18 @@
                         <td>{{$item->consumption_date}}</td>
 
                         <td>{{$item->quantity}}</td>
+
+                        <td>
+
+                            <form role="form" method="POST"
+                                  action="{{ route('consumptions.destroy', $item->id) }}">
+                                @csrf
+                                @method('Delete')
+                                <button type="submit" class="btn btn-icon btn-danger">
+                                    <i class="la la-trash-o fs-3"></i>
+                                </button>
+                            </form>
+                        </td>
                     </tr>
                     <!--end::Table row-->
                 @endforeach

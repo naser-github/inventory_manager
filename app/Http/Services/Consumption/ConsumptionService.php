@@ -45,6 +45,7 @@ class ConsumptionService
         foreach ($payload['consumption_data'] as $item) {
             $consumptionItem['item_id'] = $item['item_id'];
             $consumptionItem['quantity'] = $item['quantity'];
+            $consumptionItem['unit_price'] = $item['unit_price'];
 
             $consumptionItemsArray[] = $consumptionItem;
         }

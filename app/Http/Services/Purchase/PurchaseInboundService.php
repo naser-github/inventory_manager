@@ -2,6 +2,7 @@
 
 namespace App\Http\Services\Purchase;
 
+use App\Http\Traits\HelperFunctionTrait;
 use App\Models\PurchaseInbound;
 use App\Models\PurchaseInboundItem;
 use App\Models\Setting\Item;
@@ -11,12 +12,14 @@ use Illuminate\Support\Facades\Auth;
 
 class PurchaseInboundService
 {
+    use HelperFunctionTrait;
+
     /**
      * @return Collection|array
      */
     public function index(): Collection|array
     {
-        return PurchaseInbound::query()->with('vendor')->orderBy('id','DESC')->get();
+        return PurchaseInbound::query()->with('vendor')->orderBy('id', 'DESC')->get();
     }
 
     /**
@@ -30,8 +33,8 @@ class PurchaseInboundService
         $purchase_inbound->raised_date = date('Y-m-d', strtotime($payload['raised_date']));
         $purchase_inbound->purchase_inbound_number = $purchase_inbound_number;
         $purchase_inbound->reference_invoice_number = $payload['reference_invoice_number'];
-        $purchase_inbound->sub_total = $payload['sub_total'];
-        $purchase_inbound->others = $payload['others'];
+        $purchase_inbound->sub_total = $payload['total'];
+        $purchase_inbound->others = 0;
         $purchase_inbound->grand_total = $payload['total'];
 
         $purchase_inbound->location_id = $payload['location_id'];
@@ -79,13 +82,16 @@ class PurchaseInboundService
                 ->first();
 
             if ($item_exist) {
+                $new_unit_price = $this->average_price_calculation($item_exist->quantity, $item_exist->unit_price, $item['quantity'], $item['unit_price']);
                 $item_exist->quantity += $item['quantity'];
+                $item_exist->unit_price = $new_unit_price;
                 $item_exist->save();
             } else {
                 $inbound_to_stock = new Stock();
                 $inbound_to_stock->location_id = $payload['location_id'];
                 $inbound_to_stock->item_id = $item['item_id'];
                 $inbound_to_stock->quantity = $item['quantity'];
+                $inbound_to_stock->unit_price = $item['unit_price'];
                 $inbound_to_stock->save();
             }
         }

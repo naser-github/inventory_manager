@@ -40,8 +40,8 @@ class PurchaseInboundStoreRequest extends FormRequest
             "purchase_inbound_items.*.total" => ['bail', 'required', 'numeric'],
             "purchase_inbound_items.*.remark" => ['bail', 'nullable', 'string'],
 
-            "sub_total" => ['bail', 'required', 'numeric'],
-            "others" => ['bail', 'required', 'numeric'],
+            "sub_total" => ['bail', 'nullable', 'numeric'],
+            "others" => ['bail', 'nullable', 'numeric'],
             "total" => ['bail', 'required', 'numeric'],
         ];
     }

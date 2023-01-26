@@ -62,6 +62,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/add', [ConsumptionController::class, 'add'])->name('consumption.add');
         Route::post('/consumption_portal', [ConsumptionController::class, 'consumption_portal'])->name('consumption.consumption_portal');
         Route::post('/store', [ConsumptionController::class, 'store'])->name('consumption.store');
+
+        Route::delete('/delete/{id}', [ConsumptionController::class, 'destroy'])->name('consumption.delete');
     });
     // End::Inventory
 

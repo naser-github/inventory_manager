@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('location_id')->constrained('locations');
             $table->foreignId('item_id')->constrained('items');
             $table->double('quantity', 8, 2)->default(0);
+            $table->double('unit_price', 8, 2)->default(0);
             $table->timestamps();
         });
     }

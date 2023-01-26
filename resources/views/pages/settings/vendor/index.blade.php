@@ -136,16 +136,16 @@
                                 <!--end::Menu item-->
 
                                 <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <form role="form" method="POST"
-                                          action="{{ route('vendors.destroy', $vendor->id) }}">
-                                        @csrf
-                                        @method('Delete')
-                                        <button type="submit" class="menu-link btn btn-sm w-100 px-3">
-                                            <i class="fa-solid fa-trash me-2"></i> Delete
-                                        </button>
-                                    </form>
-                                </div>
+{{--                                <div class="menu-item px-3">--}}
+{{--                                    <form role="form" method="POST"--}}
+{{--                                          action="{{ route('vendors.destroy', $vendor->id) }}">--}}
+{{--                                        @csrf--}}
+{{--                                        @method('Delete')--}}
+{{--                                        <button type="submit" class="menu-link btn btn-sm w-100 px-3">--}}
+{{--                                            <i class="fa-solid fa-trash me-2"></i> Delete--}}
+{{--                                        </button>--}}
+{{--                                    </form>--}}
+{{--                                </div>--}}
                                 <!--end::Menu item-->
                             </div>
                             <!--end::Menu-->

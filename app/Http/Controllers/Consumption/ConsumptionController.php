@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
@@ -51,7 +52,12 @@ class ConsumptionController extends Controller
         return view('pages.consumption.add', compact('locations'));
     }
 
-    public function consumption_portal(Request $request, InventoryService $inventoryService)
+    /**
+     * @param Request $request
+     * @param InventoryService $inventoryService
+     * @return Factory|View|Application
+     */
+    public function consumption_portal(Request $request, InventoryService $inventoryService): Factory|View|Application
     {
         $validated = $request->validate([
             'location_id' => ['required', 'integer', Rule::exists("locations", "id")],
@@ -63,7 +69,12 @@ class ConsumptionController extends Controller
         return view('pages.consumption.consumption_portal', compact('items', 'location_id'));
     }
 
-    public function store(ConsumptionStoreRequest $request, ConsumptionService $consumptionService): \Illuminate\Http\RedirectResponse
+    /**
+     * @param ConsumptionStoreRequest $request
+     * @param ConsumptionService $consumptionService
+     * @return RedirectResponse
+     */
+    public function store(ConsumptionStoreRequest $request, ConsumptionService $consumptionService): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -81,5 +92,8 @@ class ConsumptionController extends Controller
         return redirect()->back()->with('success', 'Consumption Successful');
     }
 
+    public function destroy($id, ConsumptionService $consumptionService)
+    {
 
+    }
 }

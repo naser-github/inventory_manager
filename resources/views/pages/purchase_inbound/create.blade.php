@@ -86,21 +86,10 @@
                 <!--begin::Repeater-->
                 <div id="purchase_inbound_items" class="pt-6">
                     <!--begin::Form group-->
-                    <div class="d-flex justify-content-end mb-4">
-                        <div class="form-group">
-                            <a href="javascript:;" data-repeater-create class="btn btn-sm btn-info hover-scale ">
-                                <i class="la la-plus"></i>Add
-                            </a>
-                        </div>
-                    </div>
-                    <!--end::Form group-->
-
-                    <!--begin::Form group-->
                     <div class="form-group">
                         <div data-repeater-list="purchase_inbound_items">
                             <div data-repeater-item>
                                 <div class="form-group row mb-5">
-
                                     <div class="col-md-2">
                                         <label class="form-label required">Select an Item</label>
                                         <select name="item_id" class="form-select" data-kt-repeater="select2"
@@ -112,43 +101,54 @@
                                         </select>
                                     </div>
 
-                                    <div class="col-md-2">
-                                        <label for="item_quantity" class="form-label required">Quantity</label>
-                                        <input type="number" step="any" class="form-control" name="quantity"
-                                               data-kt-repeater="quantity" oninput="onInputValue()"
-                                               required/>
-                                    </div>
+                                    <div class="col-md-10">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label for="item_quantity" class="form-label required">Quantity</label>
+                                                <input type="number" step="any" class="form-control" name="quantity"
+                                                       data-kt-repeater="quantity" oninput="onInputValue()"
+                                                       required/>
+                                            </div>
 
-                                    <div class="col-md-2">
-                                        <label class="form-label required">Unit Price</label>
-                                        <input type="number" step="any" class="form-control" name="unit_price"
-                                               data-kt-repeater="unit_price" oninput="onInputValue()"
-                                               required/>
-                                    </div>
+                                            <div class="col-md-2">
+                                                <label class="form-label required">Unit Price</label>
+                                                <input type="number" step="any" class="form-control" name="unit_price"
+                                                       data-kt-repeater="unit_price" oninput="onInputValue()"
+                                                       required/>
+                                            </div>
 
-                                    <div class="col-md-2">
-                                        <label class="form-label">Sub Total</label>
-                                        <input type="number" step="any" class="form-control form-control-solid"
-                                               name="sub_total" data-kt-repeater="sub_total" readonly="true"/>
-                                    </div>
+                                            <div class="col-md-2">
+                                                <label class="form-label">Sub Total</label>
+                                                <input type="number" step="any" class="form-control form-control-solid"
+                                                       name="sub_total" data-kt-repeater="sub_total" readonly/>
+                                            </div>
 
-                                    <div class="col-md-1">
-                                        <label class="form-label">Vat</label>
-                                        <input type="number" step="any" class="form-control" name="vat"
-                                               data-kt-repeater="vat" oninput="onInputValue()"
-                                               required/>
-                                    </div>
+                                            <div class="col-md-1">
+                                                <label class="form-label">Vat</label>
+                                                <input type="number" step="any" class="form-control form-control-solid"
+                                                       name="vat" data-kt-repeater="vat"
+                                                       oninput="onInputValue()"
+                                                       readonly/>
+                                            </div>
 
-                                    <div class="col-md-2">
-                                        <label class="form-label">Total</label>
-                                        <input type="number" step="any" class="form-control form-control-solid"
-                                               name="total" data-kt-repeater="total" readonly="true"/>
-                                    </div>
+                                            <div class="col-md-2">
+                                                <label class="form-label">Total</label>
+                                                <input type="number" step="any" class="form-control form-control-solid"
+                                                       name="total" data-kt-repeater="total" readonly/>
+                                            </div>
 
-                                    <div class="col-md-1">
-                                        <label class="form-label">Remark</label>
-                                        <input type="text" id="item_remark" name="remark"
-                                               class="form-control"/>
+                                            <div class="col-md-2">
+                                                <label class="form-label">Remark</label>
+                                                <input type="text" id="item_remark" class="form-control" name="remark"/>
+                                            </div>
+
+                                            <div class="col-md-1">
+                                                <a href="javascript:;" data-repeater-delete
+                                                   class="btn btn-sm btn-icon btn-danger mt-3 mt-md-9">
+                                                    <i class="la la-trash-o fs-3"></i>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -156,6 +156,15 @@
                     </div>
                     <!--end::Form group-->
 
+                    <!--begin::Form group-->
+                    <div class="d-flex mb-4">
+                        <div class="form-group">
+                            <a href="javascript:;" data-repeater-create class="btn btn-sm btn-info hover-scale ">
+                                <i class="la la-plus"></i>Add
+                            </a>
+                        </div>
+                    </div>
+                    <!--end::Form group-->
 
                 </div>
                 <!--end::Repeater-->
@@ -164,31 +173,38 @@
             <div class="card-footer">
                 <div class="row">
                     {{--sub total--}}
-                    <div class="d-flex justify-content-end align-items-center col-md-9 mb-4 me-4">
-                        <label for="sub_total" class="form-label">Sub Total</label>
-                    </div>
-                    <div class="col-md-2 mb-4">
-                        <input type="number" step="any" class="form-control form-control-solid" id="sub_total"
-                               name="sub_total"
-                               readonly="true"/>
-                    </div>
+                    {{--                    <div class="d-flex justify-content-end align-items-center col-md-9 mb-4 me-4">--}}
+                    {{--                        <label for="sub_total" class="form-label">Sub Total</label>--}}
+                    {{--                    </div>--}}
+                    {{--                    <div class="col-md-2 mb-4">--}}
+                    {{--                        <input type="number" step="any" class="form-control form-control-solid"--}}
+                    {{--                               id="sub_total" name="sub_total" readonly/>--}}
+                    {{--                    </div>--}}
 
                     {{--others--}}
-                    <div class="d-flex justify-content-end align-items-center col-md-9 mb-4 me-4">
-                        <label for="others" class="form-label">Others</label>
-                    </div>
-                    <div class="col-md-2 mb-4">
-                        <input type="number" step="any" class="form-control" id="others" name="others"
-                               oninput="onChangeOther()" required/>
-                    </div>
+                    {{--                    <div class=" d-flex justify-content-end align-items-center col-md-9 mb-4 me-4">--}}
+                    {{--                        <label for="others" class="form-label">Others</label>--}}
+                    {{--                    </div>--}}
+                    {{--                    <div class="col-md-2 mb-4">--}}
+                    {{--                        <input type="number" step="any" class="form-control form-control-solid" id="others"--}}
+                    {{--                               name="others"--}}
+                    {{--                               oninput="onChangeOther()" value=0 readonly required/>--}}
+                    {{--                    </div>--}}
 
                     {{--total--}}
-                    <div class="d-flex justify-content-end align-items-center col-md-9 mb-4 me-4">
-                        <label for="total" class="form-label">Total</label>
-                    </div>
-                    <div class="col-md-2 mb-4">
-                        <input type="number" step="any" class="form-control form-control-solid" id="total" name="total"
-                               readonly="true"/>
+
+                    <div class="col-md-2"></div>
+                    <div class="col-md-10">
+                        <div class="row">
+                            <div class="d-flex justify-content-end align-items-center col-md-7 mb-4">
+                                <label for="total" class="form-label">Total</label>
+                            </div>
+                            <div class="col-md-2 mb-4">
+                                <input type="number" step="any" class="form-control form-control-solid" id="total"
+                                       name="total"
+                                       readonly/>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -250,13 +266,12 @@
             var sub_total = document.querySelectorAll('[data-kt-repeater="sub_total"]');
             var total = document.querySelectorAll('[data-kt-repeater="total"]');
 
-            var grand_sub_total = document.querySelector('[name="sub_total"]');
-            var grand_other = document.querySelector('[name="others"]');
             var grand_total = document.querySelector('[name="total"]');
-
-            grand_sub_total.value = 0;
+            grand_total.value = 0;
 
             for (var i = 0; i < quantity.length; i++) {
+                vat[i].value = 0
+
                 if (Number(quantity[i].value) > 0 && Number(unit_price[i].value) > 0) {
                     sub_total[i].value = Number(quantity[i].value) * Number(unit_price[i].value);
 
@@ -264,25 +279,25 @@
                         total[i].value = Number(sub_total[i].value) + ((Number(sub_total[i].value) * Number(vat[i].value)) / 100);
                     else total[i].value = Number(sub_total[i].value)
 
-                    grand_sub_total.value = Number(grand_sub_total.value) + Number(total[i].value);
+                    grand_total.value = Number(grand_total.value) + Number(total[i].value);
 
-                } else sub_total[i].value = total[i].value = grand_sub_total.value = grand_total.value = 0;
+                } else sub_total[i].value = total[i].value = 0;
             }
 
-            if (Number(grand_other.value) > 0) {
-                grand_total.value = Number(grand_sub_total.value) + Number(grand_other.value)
-            } else grand_total.value = Number(grand_sub_total.value);
+            // if (Number(grand_other.value) > 0) {
+            //     grand_total.value = Number(grand_total.value) + Number(grand_other.value)
+            // } else grand_total.value = Number(grand_total.value);
         }
 
-        function onChangeOther() {
-            var grand_sub_total = document.querySelector('[name="sub_total"]');
-            var grand_other = document.querySelector('[name="others"]');
-            var grand_total = document.querySelector('[name="total"]');
-
-            if (Number(grand_other.value) > 0) {
-                grand_total.value = Number(grand_sub_total.value) + Number(grand_other.value)
-            } else grand_total.value = Number(grand_sub_total.value);
-        }
+        // function onChangeOther() {
+        //     var grand_sub_total = document.querySelector('[name="sub_total"]');
+        //     var grand_other = document.querySelector('[name="others"]');
+        //     var grand_total = document.querySelector('[name="total"]');
+        //
+        //     if (Number(grand_other.value) > 0) {
+        //         grand_total.value = Number(grand_sub_total.value) + Number(grand_other.value)
+        //     } else grand_total.value = Number(grand_sub_total.value);
+        // }
     </script>
     <!--End::repeater-->
 @endsection

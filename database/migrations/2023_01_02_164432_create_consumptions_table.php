@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->date('consumption_date');
             $table->foreignId('item_id')->constrained('items');
             $table->double('quantity', 8, 2);
+            $table->double('unit_price', 8, 2)->default(0);
             $table->string('received_by')->nullable();
             $table->foreignId('location_id')->constrained('locations');
             $table->foreignId('user_id')->constrained('users');
