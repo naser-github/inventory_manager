@@ -52,6 +52,11 @@ class ConsumptionService
         Consumption::insert($consumptionItemsArray);
     }
 
+    public function findById($payload)
+    {
+        return Consumption::query()->where('id', $payload)->first();
+    }
+
     public function updateStock($payload)
     {
         $message = null;
@@ -73,5 +78,23 @@ class ConsumptionService
 
         return $message;
 
+    }
+
+    public function returnStock($payload)
+    {
+        $itemExist = Stock::query()
+            ->where('location_id', $payload->location_id)
+            ->where('item_id', $payload->item_id)
+            ->first();
+
+        if ($itemExist) {
+            $itemExist->quantity += $payload->quantity;
+            $itemExist->save();
+        }
+    }
+
+    public function destroy($payload)
+    {
+        Consumption::query()->where('id', $payload)->delete();
     }
 }

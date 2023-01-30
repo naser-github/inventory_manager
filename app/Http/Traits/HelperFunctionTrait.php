@@ -21,14 +21,22 @@ trait HelperFunctionTrait
         return $location . '/' . $raisedDate . '/' . $number_add;
     }
 
-    public function average_price_calculation($stockQuantity, $stockPrice, $inboundQuantity, $inboundPrice)
+    /**
+     * @param $stockQuantity
+     * @param $stockPrice
+     * @param $inboundQuantity
+     * @param $inboundPrice
+     * @return float|int
+     */
+    public function average_price_calculation($stockQuantity, $stockPrice, $inboundQuantity, $inboundPrice): float|int
     {
         $inbound_valuation = $inboundQuantity * $inboundPrice;
         $stock_valuation = $stockQuantity * $stockPrice;
 
-        return ($inbound_valuation + $stock_valuation) / ($inboundQuantity + $stockQuantity);
+        $finalQuantity = $inboundQuantity + $stockQuantity;
+        $finalQuantity = $finalQuantity > 0 ? $finalQuantity : 1;
 
-
+        return ($inbound_valuation + $stock_valuation) / $finalQuantity;
     }
 
 }

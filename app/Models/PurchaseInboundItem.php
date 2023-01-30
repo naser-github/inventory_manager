@@ -16,4 +16,9 @@ class PurchaseInboundItem extends Model
         return $this->belongsTo(Item::class, 'item_id', 'id');
     }
 
+    public function purchaseInbound(): BelongsTo
+    {
+        return $this->belongsTo(PurchaseInbound::class, 'purchase_inbound_id', 'id');
+    }
+
 }

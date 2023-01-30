@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Consumption\ConsumptionController;
+use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Inventory\InventoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Purchase\PurchaseInboundController;
@@ -34,9 +35,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
-    Route::get('/', function () {
-        return view('welcome');
+    // Begin::Dashboard
+    Route::prefix('/')->group(function () {
+        Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
     });
+    // End::Dashboard
 
     // Begin::Purchase
     Route::prefix('/purchase-inbound')->group(function () {
@@ -46,6 +49,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/store', [PurchaseInboundController::class, 'store'])->name('purchase_inbound.store');
 
         Route::get('/show/{id}', [PurchaseInboundController::class, 'show'])->name('purchase_inbound.show');
+
+        Route::delete('/delete/{id}', [PurchaseInboundController::class, 'destroy'])->name('purchase_inbound.destroy');
     });
     // End::Purchase
 
@@ -63,7 +68,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/consumption_portal', [ConsumptionController::class, 'consumption_portal'])->name('consumption.consumption_portal');
         Route::post('/store', [ConsumptionController::class, 'store'])->name('consumption.store');
 
-        Route::delete('/delete/{id}', [ConsumptionController::class, 'destroy'])->name('consumption.delete');
+        Route::delete('/delete/{id}', [ConsumptionController::class, 'destroy'])->name('consumption.destroy');
     });
     // End::Inventory
 

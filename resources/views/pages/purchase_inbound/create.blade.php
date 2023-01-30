@@ -144,7 +144,7 @@
 
                                             <div class="col-md-1">
                                                 <a href="javascript:;" data-repeater-delete
-                                                   class="btn btn-sm btn-icon btn-danger mt-3 mt-md-9">
+                                                   class="btn btn-sm btn-icon btn-danger hover-scale mt-3 mt-md-9">
                                                     <i class="la la-trash-o fs-3"></i>
                                                 </a>
                                             </div>
@@ -201,8 +201,7 @@
                             </div>
                             <div class="col-md-2 mb-4">
                                 <input type="number" step="any" class="form-control form-control-solid" id="total"
-                                       name="total"
-                                       readonly/>
+                                       name="total" readonly/>
                             </div>
                         </div>
                     </div>

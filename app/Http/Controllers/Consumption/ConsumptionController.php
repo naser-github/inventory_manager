@@ -7,6 +7,7 @@ use App\Http\Requests\Common\FilterbyDateAndLocation;
 use App\Http\Requests\Consumption\ConsumptionStoreRequest;
 use App\Http\Services\Consumption\ConsumptionService;
 use App\Http\Services\Inventory\InventoryService;
+use App\Http\Services\Purchase\PurchaseInboundService;
 use App\Http\Services\setting\LocationService;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
@@ -88,12 +89,29 @@ class ConsumptionController extends Controller
             DB::rollback();
             return redirect()->back()->with('error', 'Process failed try again!!');
         }
-
         return redirect()->back()->with('success', 'Consumption Successful');
     }
 
-    public function destroy($id, ConsumptionService $consumptionService)
+    public function destroy($id, ConsumptionService $consumptionService, PurchaseInboundService $purchaseInboundService)
     {
+        $consumption = $consumptionService->findById($id);
 
+        if ($consumption) {
+            $already_inbounded = $purchaseInboundService->already_Inbounded(
+                $consumption->item_id, $consumption->location_id, $consumption->updated_at
+            );
+            if (!$already_inbounded) {
+                DB::beginTransaction();
+                try {
+                    $consumptionService->returnStock($consumption);
+                    $consumptionService->destroy($id);
+                    DB::commit();
+                } catch (\Exception $error) {
+                    DB::rollback();
+                }
+                return redirect()->back()->with('success', 'Consumption Deleted');
+            }
+        }
+        return redirect()->back()->with('error', 'Permission Denied!!');
     }
 }

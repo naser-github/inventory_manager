@@ -129,9 +129,8 @@
                         <td>{{$item->quantity}}</td>
 
                         <td>
-
                             <form role="form" method="POST"
-                                  action="{{ route('consumptions.destroy', $item->id) }}">
+                                  action="{{ route('consumption.destroy', $item->id) }}">
                                 @csrf
                                 @method('Delete')
                                 <button type="submit" class="btn btn-icon btn-danger">

@@ -3,6 +3,7 @@
 namespace App\Http\Services\Purchase;
 
 use App\Http\Traits\HelperFunctionTrait;
+use App\Models\Consumption;
 use App\Models\PurchaseInbound;
 use App\Models\PurchaseInboundItem;
 use App\Models\Setting\Item;
@@ -100,6 +101,28 @@ class PurchaseInboundService
     /**
      * @param $payload
      * @return object|null
+     */
+    public function findById($payload): object|null
+    {
+        return PurchaseInbound::query()->where('id', $payload)->first();
+    }
+
+    /**
+     * @param $payload
+     * @return object|null
+     * WPIV means [PI => PurchaseInbound]
+     */
+    public function findByIdWPI($payload): object|null
+    {
+        return PurchaseInbound::query()
+            ->with(['purchaseInboundItems'])
+            ->where('id', $payload)
+            ->first();
+    }
+
+    /**
+     * @param $payload
+     * @return object|null
      * WPIV means [PI => PurchaseInbound, V => with vendor]
      */
     public function findByIdWPIV($payload): object|null
@@ -119,5 +142,56 @@ class PurchaseInboundService
         return PurchaseInbound::query()
             ->where('location_id', $payload)
             ->latest()->pluck('purchase_inbound_number')->first();
+    }
+
+    public function destroyInboundItems($payload): void
+    {
+        PurchaseInboundItem::query()->where('purchase_inbound_id', $payload)->delete();
+    }
+
+    public function destroy($payload): void
+    {
+        PurchaseInbound::query()->where('id', $payload)->delete();
+
+    }
+
+    public function consumedAlready($item_id, $location_id, $inbound_time)
+    {
+        return Consumption::query()
+            ->where('item_id', $item_id)
+            ->where('location_id', $location_id)
+            ->where('updated_at', '>=', $inbound_time)
+            ->orderBy('created_at', 'DESC')
+            ->exists();
+    }
+
+    public function stock_to_inbound($inbound_items, $location_id)
+    {
+        foreach ($inbound_items as $item) {
+            $item_exist = Stock::query()
+                ->where('location_id', $location_id)
+                ->where('item_id', $item['item_id'])
+                ->first();
+
+            if ($item_exist) {
+                $new_unit_price = $this->average_price_calculation($item_exist->quantity, $item_exist->unit_price, -$item['quantity'], $item['unit_price']);
+                $item_exist->quantity -= $item['quantity'];
+                $item_exist->unit_price = $new_unit_price;
+                $item_exist->save();
+            }
+        }
+    }
+
+    public function already_Inbounded($item_id, $location_id, $consumption_time)
+    {
+        return PurchaseInboundItem::query()
+            ->whereHas('purchaseInbound', function ($query) use ($location_id) {
+                $query->where('location_id', '=', $location_id);
+            })
+            ->where('item_id', $item_id)
+            ->where('updated_at', '>=', $consumption_time)
+            ->orderBy('id', 'DESC')
+            ->exists();
+
     }
 }

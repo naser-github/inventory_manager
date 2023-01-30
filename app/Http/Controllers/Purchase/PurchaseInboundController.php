@@ -100,4 +100,32 @@ class PurchaseInboundController extends Controller
             return redirect()->back()->with('error', 'No Purchase Inbound Found');
 
     }
+
+    public function destroy($id, PurchaseInboundService $purchaseInboundService)
+    {
+        $purchase_inbound = collect($purchaseInboundService->findByIdWPI($id));
+
+        $location_id = $purchase_inbound['location_id'];
+        $inbound_time = $purchase_inbound['updated_at'];
+
+        DB::beginTransaction();
+
+        try {
+            foreach ($purchase_inbound['purchase_inbound_items'] as $item) {
+                $is_consumed_already = $purchaseInboundService->consumedAlready($item['item_id'], $location_id, $inbound_time);
+                if ($is_consumed_already) {
+                    return redirect()->back()->with('error', 'Items are already consumed');
+                }
+            }
+            $purchaseInboundService->stock_to_inbound($purchase_inbound['purchase_inbound_items'], $location_id);
+            $purchaseInboundService->destroyInboundItems($id);
+            $purchaseInboundService->destroy($id);
+            DB::commit();
+        } catch (Exception $exception) {
+            DB::rollback();
+        }
+
+        return back()->with('success', 'Inbound Deleted!!');
+
+    }
 }
