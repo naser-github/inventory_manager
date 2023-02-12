@@ -37,6 +37,7 @@ class StockHistoryCommand extends Command
         foreach ($stock as $item) {
             $item_data['stock_id'] = $item['id'];
             $item_data['quantity'] = $item['quantity'];
+            $item_data['unit_price'] = $item['unit_price'];
             $item_data['created_at'] = $current_time;
             $item_data['updated_at'] = $current_time;
             $stock_history[] = $item_data;

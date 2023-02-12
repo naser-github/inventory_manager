@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('stock_id')->constrained('stocks');
             $table->double('quantity', 8, 2)->default(0);
+            $table->double('unit_price', 8, 2)->default(0);
             $table->timestamps();
         });
     }
