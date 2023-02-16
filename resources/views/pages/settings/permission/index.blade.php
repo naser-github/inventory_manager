@@ -208,12 +208,14 @@
 
     <script>
         // Begin::DataTable
-        const table = $('#kt_table_permissions').DataTable();
+        $(document).ready(function () {
+            const table = $('#kt_table_permissions').DataTable();
 
-        // #searchInput is a <input type="text"> element
-        $('#searchInput').on('keyup', function () {
-            table.search(this.value).draw();
-        });
+            // #searchInput is a <input type="text"> element
+            $('#searchInput').on('keyup', function () {
+                table.search(this.value).draw();
+            });
+        })
         // END::DataTable
 
         // Begin::Modal

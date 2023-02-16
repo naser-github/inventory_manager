@@ -76,7 +76,7 @@
         <!--begin::Card body-->
         <div class="card-body py-4">
             <!--begin::Table-->
-            <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_users">
+            <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_items">
                 <!--begin::Table head-->
                 <thead>
                 <!--begin::Table row-->
@@ -180,16 +180,16 @@
                                 </div>
                                 <!--end::Menu item-->
                                 <!--begin::Menu item-->
-{{--                                <div class="menu-item px-3">--}}
-{{--                                    <form role="form" method="POST"--}}
-{{--                                          action="{{ route('items.destroy', $item->id) }}">--}}
-{{--                                        @csrf--}}
-{{--                                        @method('Delete')--}}
-{{--                                        <button type="submit" class="menu-link btn btn-sm w-100 px-3">--}}
-{{--                                            <i class="fa-solid fa-trash me-2"></i> Delete--}}
-{{--                                        </button>--}}
-{{--                                    </form>--}}
-{{--                                </div>--}}
+                                {{--                                <div class="menu-item px-3">--}}
+                                {{--                                    <form role="form" method="POST"--}}
+                                {{--                                          action="{{ route('items.destroy', $item->id) }}">--}}
+                                {{--                                        @csrf--}}
+                                {{--                                        @method('Delete')--}}
+                                {{--                                        <button type="submit" class="menu-link btn btn-sm w-100 px-3">--}}
+                                {{--                                            <i class="fa-solid fa-trash me-2"></i> Delete--}}
+                                {{--                                        </button>--}}
+                                {{--                                    </form>--}}
+                                {{--                                </div>--}}
                                 <!--end::Menu item-->
                             </div>
                             <!--end::Menu-->
@@ -216,11 +216,13 @@
     <!--end::Vendors Javascript-->
 
     <script>
-        const table = $('#kt_table_users').DataTable();
+        $(document).ready(function () {
+            const table = $('#kt_table_items').DataTable();
 
-        // #searchInput is a <input type="text"> element
-        $('#searchInput').on('keyup', function () {
-            table.search(this.value).draw();
-        });
+            // #searchInput is a <input type="text"> element
+            $('#searchInput').on('keyup', function () {
+                table.search(this.value).draw();
+            });
+        })
     </script>
 @endsection

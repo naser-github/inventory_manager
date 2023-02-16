@@ -38,6 +38,7 @@ Route::middleware('auth')->group(function () {
     // Begin::Dashboard
     Route::prefix('/')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
+        Route::get('/export-report', [DashboardController::class, 'export'])->name('export.report');
     });
     // End::Dashboard
 
@@ -104,7 +105,6 @@ Route::middleware('auth')->group(function () {
         //setting
         'items' => ItemController::class,
         'locations' => LocationController::class,
-        'vendors' => VendorController::class,
 
         // system settings
         'roles' => RoleController::class,

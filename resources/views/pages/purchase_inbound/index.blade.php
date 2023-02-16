@@ -158,14 +158,17 @@
 
     <!--begin::Datatable-->
     <script>
-        const table = $('#kt_table_purchase_inbound').DataTable({
-            order: []
-        });
+        $(document).ready(function () {
+            const table = $('#kt_table_purchase_inbound').DataTable({
+                order: []
+            });
 
-        // #searchInput is a <input type="text"> element
-        $('#searchInput').on('keyup', function () {
-            table.search(this.value).draw();
-        });
+            // #searchInput is a <input type="text"> element
+            $('#searchInput').on('keyup', function () {
+                table.search(this.value).draw();
+            });
+        })q
+
     </script>
     <!--End::Datatable-->
 @endsection

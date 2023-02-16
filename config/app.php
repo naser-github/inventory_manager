@@ -198,7 +198,7 @@ return [
         // external packages
         Spatie\Permission\PermissionServiceProvider::class, //spatie
         Barryvdh\Debugbar\ServiceProvider::class, // Laravel Debugger
-//        Maatwebsite\Excel\ExcelServiceProvider::class, // Laravel Excel
+        Maatwebsite\Excel\ExcelServiceProvider::class, // Laravel Excel
 
     ],
 
@@ -215,6 +215,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ])->toArray(),
 
 ];

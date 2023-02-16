@@ -158,12 +158,14 @@
     <!--end::Vendors Javascript-->
 
     <script>
-        const table = $('#kt_table_consumption').DataTable();
+        $(document).ready(function () {
+            const table = $('#kt_table_consumption').DataTable();
 
-        // #searchInput is a <input type="text"> element
-        $('#searchInput').on('keyup', function () {
-            table.search(this.value).draw();
-        });
+            // #searchInput is a <input type="text"> element
+            $('#searchInput').on('keyup', function () {
+                table.search(this.value).draw();
+            });
+        })
     </script>
 
     {{--date picker--}}

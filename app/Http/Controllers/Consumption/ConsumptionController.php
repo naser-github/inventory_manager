@@ -20,19 +20,23 @@ use Illuminate\Validation\Rule;
 
 class ConsumptionController extends Controller
 {
+
     /**
      * @param FilterbyDateAndLocation $request
      * @param ConsumptionService $consumptionService
      * @param LocationService $locationService
-     * @return Factory|View|Application
+     * @return Factory|View|Application|RedirectResponse
      */
-    public function index(FilterbyDateAndLocation $request, ConsumptionService $consumptionService, LocationService $locationService): Factory|View|Application
+    public function index(FilterbyDateAndLocation $request, ConsumptionService $consumptionService, LocationService $locationService): Factory|View|Application|RedirectResponse
     {
         $validated = $request->validated();
 
         if (array_key_exists('date', $validated)) {
             $date = explode(' - ', $validated['date']);
-            $date = [date('Y-m-d', strtotime($date[0])), date('Y-m-d', strtotime($date[1]))];
+            if (count($date) > 1)
+                $date = [date('Y-m-d', strtotime($date[0])), date('Y-m-d', strtotime($date[1]))];
+            else
+                return redirect()->back()->with('error', 'wrong input');
         } else $date = [Carbon::now()->subDay(6)->format('Y-m-d'), Carbon::now()->format('Y-m-d')];
 
         $location = array_key_exists('location', $validated) ? $validated['location'] : null;

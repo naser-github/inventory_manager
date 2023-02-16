@@ -8,3 +8,11 @@
 }
 
 /*End::toastr*/
+
+/*Begin::button*/
+.btn-block {
+    display: block;
+    width: 100%;
+}
+
+/*End::button*/

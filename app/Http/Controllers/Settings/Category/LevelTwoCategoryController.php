@@ -37,7 +37,7 @@ class LevelTwoCategoryController extends Controller
      */
     public function create(
         LevelOneCategoryService $levelOneCategoryService,
-        MasterCategoryService $masterCategoryService
+        MasterCategoryService   $masterCategoryService
     ): Factory|View|Application
     {
         $master_categories = $masterCategoryService->masterCategoryList();
@@ -84,7 +84,7 @@ class LevelTwoCategoryController extends Controller
             $master_categories = $masterCategoryService->masterCategoryList();
             $level_one_categories = $levelOneCategoryService->levelOneCategoryList();
 
-            return view('pages.settings.category.level_two_category.edit', compact('level_two_category'));
+            return view('pages.settings.category.level_two_category.edit', compact('master_categories', 'level_one_categories', 'level_two_category'));
         } else return back();
     }
 

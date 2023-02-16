@@ -13,25 +13,24 @@ use Rakibhstu\Banglanumber\NumberToBangla;
 
 class DashboardService
 {
-    public function openingStock($location_id)
+    public function openingStock($dates, $location_id)
     {
-        $date = Carbon::now()->subDay(1)->format('Y-m-d');
-        $today = Carbon::now();
-
         $inbound = PurchaseInbound::query()
-            ->whereDate('raised_date', '=', $today)
+            ->whereBetween('purchase_inbounds.raised_date', $dates)
+            ->where('purchase_inbounds.location_id', '=', $location_id)
             ->leftJoin('purchase_inbound_items', 'purchase_inbound_items.purchase_inbound_id', '=', 'purchase_inbounds.id')
             ->selectRaw("
                 purchase_inbound_items.item_id as item_id, null as item_name, null as item_unit,
                 0 as opening_quantity, 0 as opening_unit_price,
                 SUM(purchase_inbound_items.quantity) as inbound_quantity,
-                SUM(purchase_inbound_items.quantity * purchase_inbound_items.unit_price) / COUNT(purchase_inbound_items.item_id) as inbound_unit_price,
+                SUM(purchase_inbound_items.total) / SUM(purchase_inbound_items.quantity) as inbound_unit_price,
                 0 as consumption_quantity
             ")
             ->groupBy('purchase_inbound_items.item_id');
 
         $consumption = Consumption::query()
-            ->whereDate('consumption_date', '=', $today)
+            ->whereBetween('consumption_date', $dates)
+            ->where('location_id', '=', $location_id)
             ->selectRaw("
                 consumptions.item_id as item_id, null as item_name, null as item_unit,
                 0 as opening_quantity, 0 as opening_unit_price,
@@ -41,7 +40,7 @@ class DashboardService
             ->groupBy('consumptions.item_id');
 
         return StockHistory::query()
-            ->whereDate('stock_histories.created_at', '=', $date)
+            ->whereDate('stock_histories.created_at', '=', $dates[0])
             ->leftJoin('stocks', 'stocks.id', '=', 'stock_histories.stock_id')
             ->leftJoin('items', 'items.id', '=', 'stocks.item_id')
             ->where('stocks.location_id', '=', $location_id)

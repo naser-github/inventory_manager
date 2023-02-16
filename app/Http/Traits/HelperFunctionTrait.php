@@ -39,4 +39,23 @@ trait HelperFunctionTrait
         return ($inbound_valuation + $stock_valuation) / $finalQuantity;
     }
 
+    /**
+     * @param $validated
+     * @return bool|array
+     */
+    public function extract_dates_from_date_range($validated): bool|array
+    {
+        if (array_key_exists('date', $validated)) {
+            $dates = explode(' - ', $validated['date']);
+
+            if (count($dates) > 1)
+                $dates = [date('Y-m-d', strtotime($dates[0])), date('Y-m-d', strtotime($dates[1]))];
+            else
+                return false;
+
+        } else $dates = [Carbon::now()->subDay(30)->format('Y-m-d'), Carbon::now()->format('Y-m-d')];
+
+        return $dates;
+    }
+
 }

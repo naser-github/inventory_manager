@@ -153,16 +153,16 @@
                                 <!--end::Menu item-->
 
                                 <!--begin::Menu item-->
-{{--                                <div class="menu-item px-3">--}}
-{{--                                    <form role="form" method="POST"--}}
-{{--                                          action="{{ route('vendors.destroy', $level_two_category->id) }}">--}}
-{{--                                        @csrf--}}
-{{--                                        @method('Delete')--}}
-{{--                                        <button type="submit" class="menu-link btn btn-sm w-100 px-3">--}}
-{{--                                            <i class="fa-solid fa-trash me-2"></i> Delete--}}
-{{--                                        </button>--}}
-{{--                                    </form>--}}
-{{--                                </div>--}}
+                                {{--                                <div class="menu-item px-3">--}}
+                                {{--                                    <form role="form" method="POST"--}}
+                                {{--                                          action="{{ route('vendors.destroy', $level_two_category->id) }}">--}}
+                                {{--                                        @csrf--}}
+                                {{--                                        @method('Delete')--}}
+                                {{--                                        <button type="submit" class="menu-link btn btn-sm w-100 px-3">--}}
+                                {{--                                            <i class="fa-solid fa-trash me-2"></i> Delete--}}
+                                {{--                                        </button>--}}
+                                {{--                                    </form>--}}
+                                {{--                                </div>--}}
                                 <!--end::Menu item-->
                             </div>
                             <!--end::Menu-->
@@ -203,12 +203,14 @@
 
     <script>
         // Begin::DataTable
-        const table = $('#kt_table_level_two_category').DataTable();
+        $(document).ready(function () {
+            const table = $('#kt_table_level_two_category').DataTable();
 
-        // #searchInput is a <input type="text"> element
-        $('#searchInput').on('keyup', function () {
-            table.search(this.value).draw();
-        });
+            // #searchInput is a <input type="text"> element
+            $('#searchInput').on('keyup', function () {
+                table.search(this.value).draw();
+            });
+        })
         // END::DataTable
 
         // Begin::Add Modal
