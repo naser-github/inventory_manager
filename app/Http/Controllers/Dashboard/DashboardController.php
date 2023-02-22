@@ -34,6 +34,8 @@ class DashboardController extends Controller
             foreach ($stock_report as $item) $stock_report_data[] = $item;
         }
 
+//        return $stock_report_data;
+
         $locations = $locationService->locationList();
 
         return view('pages.dashboard.index', compact(
