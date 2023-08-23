@@ -1,0 +1,80 @@
+version: '3.8'
+services:
+
+    #   PHP Server
+    inventory_manager:
+        build:
+            args:
+                user: naser
+                uid: 1000
+            context: ./ # path of Dockerfile
+            dockerfile: Dockerfile
+
+        image: inventory_manager
+        container_name: inventory_manager
+        restart: unless-stopped # automatically restarts the MySQL server if stops
+
+        working_dir: /var/www # [/var/www] is the standard though you can use any name
+        volumes:
+            - ./:/var/www
+
+        networks:
+            - inventory_manager_network
+
+    #   Database Server
+    inventory_manager_db:
+        image: mysql:8.0
+        container_name: inventory_manager_db
+        restart: unless-stopped # automatically restarts the MySQL server if stops
+
+        ports:
+            - "8386:3306" # custom_port_number : actual_port_number
+
+        environment:
+            MYSQL_DATABASE: ${DB_DATABASE} #database name
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD} #database root password
+            MYSQL_PASSWORD: ${DB_PASSWORD} #database password
+            MYSQL_USER: ${DB_USERNAME} #database user
+            SERVICE_TAGS: dev
+            SERVICE_NAME: mysql
+
+        volumes:
+            - inventory_manager_data:/var/lib/mysql
+        networks:
+            - inventory_manager_network
+
+    #   Nginx Server
+    inventory_manager_nginx:
+        image: nginx:latest
+        container_name: inventory_manager_nginx
+        restart: unless-stopped
+        ports:
+            - "9000:80"
+        volumes:
+            - ./:/var/www
+            - ./docker-compose/nginx:/etc/nginx/conf.d
+        networks:
+            - inventory_manager_network
+
+    #    phpmyadmin
+    inventory_manager_phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: inventory_manager_phpmyadmin
+        restart: unless-stopped
+        depends_on:
+            - inventory_manager_db
+        ports:
+            - "9083:80"
+        environment:
+            PMA_HOST: inventory_manager_db
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+        networks:
+            - inventory_manager_network
+
+#   Docker Networks
+networks:
+    inventory_manager_network:
+        driver: bridge
+
+volumes:
+    inventory_manager_data: ~
