@@ -66,7 +66,7 @@ class ItemService
         $item->status = $payload['status'];
         $item->master_category_id = $payload['master_category'];
         $item->level_one_category_id = $payload['level_one_category'];
-        $item->level_two_category_id = $payload['level_two_category'];
+//        $item->level_two_category_id = $payload['level_two_category'];
         $item->save();
     }
 

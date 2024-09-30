@@ -90,10 +90,10 @@ class ItemController extends Controller
         if ($item) {
             $master_categories = $masterCategoryService->masterCategoryList();
             $level_one_categories = $levelOneCategoryService->levelOneCategoryList();
-            $level_two_categories = $levelTwoCategoryService->levelTwoCategoryList();
+//            $level_two_categories = $levelTwoCategoryService->levelTwoCategoryList();
 
             return view('pages.settings.item.edit', compact(
-                'item', 'master_categories', 'level_one_categories', 'level_two_categories'
+                'item', 'master_categories', 'level_one_categories'
             ));
         } else {
             Session::flash('error', 'No Item Found');

@@ -129,25 +129,25 @@
                     </div>
 
                     {{--level two category--}}
-                    <div class="col-sm-6 mb-6">
-                        <label for="level_two_category" class="form-label">Level Two Category</label>
-                        <select id="level_two_category" name="level_two_category" class="form-select"
-                                aria-label="Assign level two category" required>
-                            <option value="">Assign a Level Two Category</option>
-                            @foreach($level_two_categories as $level_two_category)
-                                <option value="{{ $level_two_category->id }}"
-                                        @if($item->level_two_category->id == $level_two_category->id) selected @endif
-                                >
-                                    {{ $level_two_category->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('level_two_category')
-                        <span class="text-danger m-0 p-0" role="alert">
-                            {{$errors->first('level_two_category')}}
-                        </span>
-                        @enderror
-                    </div>
+{{--                    <div class="col-sm-6 mb-6">--}}
+{{--                        <label for="level_two_category" class="form-label">Level Two Category</label>--}}
+{{--                        <select id="level_two_category" name="level_two_category" class="form-select"--}}
+{{--                                aria-label="Assign level two category" required>--}}
+{{--                            <option value="">Assign a Level Two Category</option>--}}
+{{--                            @foreach($level_two_categories as $level_two_category)--}}
+{{--                                <option value="{{ $level_two_category->id }}"--}}
+{{--                                        @if($item->level_two_category->id == $level_two_category->id) selected @endif--}}
+{{--                                >--}}
+{{--                                    {{ $level_two_category->name }}--}}
+{{--                                </option>--}}
+{{--                            @endforeach--}}
+{{--                        </select>--}}
+{{--                        @error('level_two_category')--}}
+{{--                        <span class="text-danger m-0 p-0" role="alert">--}}
+{{--                            {{$errors->first('level_two_category')}}--}}
+{{--                        </span>--}}
+{{--                        @enderror--}}
+{{--                    </div>--}}
                 </div>
 
                 <div class="d-flex justify-content-end">

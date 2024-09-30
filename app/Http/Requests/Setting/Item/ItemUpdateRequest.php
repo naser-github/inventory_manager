@@ -31,7 +31,7 @@ class ItemUpdateRequest extends FormRequest
             'status' => ['required', 'boolean'],
             'master_category' => ['required', 'integer', Rule::exists("master_categories", "id")],
             'level_one_category' => ['required', 'integer', Rule::exists("level_one_categories", "id")],
-            'level_two_category' => ['required', 'integer', Rule::exists("level_two_categories", "id")],
+//            'level_two_category' => ['required', 'integer', Rule::exists("level_two_categories", "id")],
         ];
     }
 }
