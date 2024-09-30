@@ -139,7 +139,7 @@
 {{--                        </span>--}}
 {{--                        @enderror--}}
 {{--                    </div>--}}
-                </div>
+{{--                </div>--}}
 
                 <div class="d-flex justify-content-end">
                     <button class="btn btn-info"> Create</button>
