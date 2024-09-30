@@ -90,7 +90,7 @@ class UserService
         $user->name = $payload['name'];
         $user->email = $payload['email'];
         if ($payload['password'] != null)
-            $user->password = $payload['password'];
+            $user->password = Hash::make($payload['password']);
         $user->status = $payload['status'];
         $user->save();
     }
