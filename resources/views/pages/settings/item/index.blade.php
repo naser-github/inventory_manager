@@ -85,9 +85,9 @@
                     <th class="min-w-125px">Unit</th>
                     <th class="min-w-125px">Master Category</th>
                     <th class="min-w-125px">Sub Category 1</th>
-                    <th class="min-w-125px">Sub Category 2</th>
-                    <th class="min-w-125px">Status</th>
-                    <th class="text-end min-w-100px">Actions</th>
+{{--                    <th class="min-w-125px">Sub Category 2</th>--}}
+                    <th class="min-w-100px">Status</th>
+                    <th class="text-end min-w-125px">Actions</th>
                 </tr>
                 <!--end::Table row-->
                 </thead>
@@ -124,11 +124,11 @@
                         <!--end::Sub Category 1-->
 
                         <!--begin::Sub Category 1-->
-                        <td>
-                            <span class="badge badge-light-info">
-                                {{$item->level_two_category->name}}
-                            </span>
-                        </td>
+{{--                        <td>--}}
+{{--                            <span class="badge badge-light-info">--}}
+{{--                                {{$item->level_two_category->name}}--}}
+{{--                            </span>--}}
+{{--                        </td>--}}
                         <!--end::Sub Category 2-->
 
                         <!--begin::Status=-->
