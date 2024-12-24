@@ -14,14 +14,14 @@ class StockHistoryCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'command:daily_stock_history_snap';
+    protected $signature = 'snap:stock';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'takes a snap of the stock table every day';
+    protected $description = 'takes a snap of the stock table';
 
     /**
      * Execute the console command.

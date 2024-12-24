@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
         $user = new User();
         $user->name = 'Super Operator';
         $user->email = 'superOperator@gmail.com';
-        $user->password = Hash::make('Ab123456');
+        $user->password = Hash::make('Im#123456');
         $user->save();
     }
 }
