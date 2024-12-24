@@ -20,6 +20,22 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 # Install PHP extensions
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
+#supervisor section:begin
+
+RUN apk add --no-cache supervisor
+
+RUN mkdir -p /var/log/supervisor && chown -R www-data:www-data /var/log/supervisor
+
+COPY ./docker/supervisor/conf.d/supervisord.conf /etc/supervisor/supervisord.conf
+COPY ./docker/supervisor/conf.d/horizon.conf /etc/supervisor/conf.d/horizon.conf
+COPY ./docker/supervisor/conf.d/laravel-worker.conf /etc/supervisor/conf.d/laravel-worker.conf
+COPY ./docker/supervisor/conf.d/kafka.conf /etc/supervisor/conf.d/kafka.conf
+
+RUN touch laravel.cron && echo "* * * * * cd /opt/app && php artisan schedule:run" >> laravel.cron && crontab laravel.cron
+
+#supervisor section:end
+
+
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
