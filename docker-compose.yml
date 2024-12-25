@@ -5,8 +5,8 @@ services:
             args:
                 user: naser
                 uid: 1000
-            context: ./docker # path of Dockerfile.local
-            dockerfile: Dockerfile.local
+            context: . # path of Dockerfile
+            dockerfile: docker/Dockerfile.prod
 
         image: inventory_manager
         container_name: inventory_manager

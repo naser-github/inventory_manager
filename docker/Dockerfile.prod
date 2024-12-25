@@ -1,26 +1,72 @@
-FROM php:8.0.2-fpm
+ARG PHP_EXTS="bcmath ctype fileinfo mbstring pdo pdo_mysql dom pcntl"
+ARG PHP_PECL_EXTS="redis apcu"
 
-# Arguments defined in docker.yml
-ARG user
-ARG uid
+# Composer base to reuse packages we've installed
+FROM composer:2.5.4 AS composer_base
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    git \
-    curl \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    zip \
-    unzip
+ARG PHP_EXTS
+ARG PHP_PECL_EXTS
 
-# Clear cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+# Create the application directory
+RUN mkdir -p /opt/app /opt/app/bin
 
-# Install PHP extensions
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+# Set the working directory
+WORKDIR /opt/app
 
-#supervisor section:begin
+# Create composer group and user
+RUN addgroup -S composer \
+    && adduser -S composer -G composer \
+    && chown -R composer /opt/app \
+    && apk add --virtual build-dependencies --no-cache ${PHPIZE_DEPS} openssl ca-certificates libxml2-dev oniguruma-dev \
+    && docker-php-ext-install -j$(nproc) ${PHP_EXTS} \
+    && pecl install ${PHP_PECL_EXTS} \
+    && docker-php-ext-enable ${PHP_PECL_EXTS} \
+    && apk del build-dependencies
+
+# Install additional PHP extensions
+RUN apk add --no-cache freetype-dev libjpeg-turbo-dev libpng-dev libzip-dev zlib-dev librdkafka-dev autoconf build-base
+RUN docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg
+RUN docker-php-ext-install gd
+
+# Switch to composer user
+USER composer
+
+# Copy composer files
+COPY --chown=composer composer.json composer.lock ./
+
+# Install dependencies
+RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist
+
+# Copy actual source code
+COPY --chown=composer . .
+
+# Run install scripts
+RUN composer install --no-dev --prefer-dist
+
+# FPM server container
+FROM php:8.3-fpm-alpine AS fpm_server
+
+ARG PHP_EXTS
+ARG PHP_PECL_EXTS
+
+WORKDIR /opt/app
+
+# Install dependencies and PHP extensions
+RUN apk add --virtual build-dependencies --no-cache ${PHPIZE_DEPS} openssl ca-certificates libxml2-dev oniguruma-dev \
+    && docker-php-ext-install -j$(nproc) ${PHP_EXTS} \
+    && pecl install ${PHP_PECL_EXTS} \
+    && docker-php-ext-enable ${PHP_PECL_EXTS} \
+    && apk del build-dependencies
+
+ENV TZ=Asia/Tokyo
+
+# Link the timezone info to system files
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN apk add nginx
+RUN docker-php-ext-install opcache
 
 RUN apk add --no-cache supervisor
 
@@ -29,22 +75,43 @@ RUN mkdir -p /var/log/supervisor && chown -R www-data:www-data /var/log/supervis
 COPY ./docker/supervisor/conf.d/supervisord.conf /etc/supervisor/supervisord.conf
 COPY ./docker/supervisor/conf.d/horizon.conf /etc/supervisor/conf.d/horizon.conf
 COPY ./docker/supervisor/conf.d/laravel-worker.conf /etc/supervisor/conf.d/laravel-worker.conf
-COPY ./docker/supervisor/conf.d/kafka.conf /etc/supervisor/conf.d/kafka.conf
 
-RUN touch laravel.cron && echo "* * * * * cd /opt/app && php artisan schedule:run" >> laravel.cron && crontab laravel.cron
+# OPCache configuration
+ENV PHP_OPCACHE_VALIDATE_TIMESTAMPS="1"
+ADD ./docker/php/conf.d/opcache.ini "$PHP_INI_DIR/conf.d/opcache.ini"
 
-#supervisor section:end
+RUN touch laravel.cron && echo "* * * * * cd /opt/app && php artisan schedule:run >> /dev/null 2>&1" >> laravel.cron && crontab laravel.cron
 
+# Make FPM log script executable
+COPY ./docker/fpm_log_file_created.sh /etc/fpm_log_file_created.sh
+RUN chmod +x /etc/fpm_log_file_created.sh
+RUN /etc/fpm_log_file_created.sh
 
-# Get latest Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Entrypoint script
+COPY ./docker/entrypoint_production.sh /etc/entrypoint.sh
+RUN chmod +x /etc/entrypoint.sh
 
-# Create system user to run Composer and Artisan Commands
-RUN useradd -G www-data,root -u $uid -d /home/$user $user
-RUN mkdir -p /home/$user/.composer && \
-    chown -R $user:$user /home/$user
+RUN chown -R www-data:www-data /var/lib/nginx/ /var/log/nginx/ /var/run/
+RUN ln -sf /proc/1/fd/1 /var/log/nginx/access.log \
+    && ln -sf /proc/1/fd/1 /var/log/nginx/error.log
 
-# Set working directory
-WORKDIR /var/www
+# Install additional packages
+RUN apk add --no-cache freetype-dev libjpeg-turbo-dev libpng-dev libzip-dev zlib-dev autoconf build-base
+RUN apk add vim vim-doc vim-tutor
 
-USER $user
+USER www-data
+
+# Copy app code base and configs
+COPY --from=composer_base --chown=www-data /opt/app /opt/app
+COPY ./docker/php/production.ini /usr/local/etc/php/conf.d/production.ini
+COPY ./docker/php/php.ini /usr/local/etc/php/conf.d/prod.ini
+COPY ./docker/php/conf.d/www.production.conf /usr/local/etc/php-fpm.d/www.conf
+COPY ./docker/nginx/conf.d/nginx.conf /etc/nginx/nginx.conf
+COPY ./docker/nginx/conf.d/nginx-prod.conf /etc/nginx/sites-enabled/default
+
+EXPOSE 8080
+
+USER root
+RUN chown -R www-data:www-data /opt/app
+
+ENTRYPOINT ["/etc/entrypoint.sh"]
