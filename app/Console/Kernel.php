@@ -14,9 +14,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('command:daily_stock_history_snap')->dailyAt('03:00');
+        $schedule->command('snap:stock')->dailyAt('03:00');
     }
-
 
     /**
      * @return void

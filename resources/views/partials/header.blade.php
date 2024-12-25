@@ -233,7 +233,7 @@
                         <!--end::Menu separator-->
                         <!--begin::Menu item-->
                         <div class="menu-item px-5">
-                            <a href="#" class="btn menu-link w-100 px-3">
+                            <a href="{{route('profile.edit')}}" class="btn menu-link w-100 px-3">
                                 My Profile
                             </a>
                         </div>

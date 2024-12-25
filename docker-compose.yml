@@ -1,14 +1,12 @@
-version: '3.8'
 services:
-
     #   PHP Server
     inventory_manager:
         build:
             args:
                 user: naser
                 uid: 1000
-            context: ./ # path of Dockerfile
-            dockerfile: Dockerfile
+            context: . # path of Dockerfile
+            dockerfile: docker/Dockerfile.prod
 
         image: inventory_manager
         container_name: inventory_manager
@@ -52,22 +50,7 @@ services:
             - "9000:80"
         volumes:
             - ./:/var/www
-            - ./docker-compose/nginx:/etc/nginx/conf.d
-        networks:
-            - inventory_manager_network
-
-    #    phpmyadmin
-    inventory_manager_phpmyadmin:
-        image: phpmyadmin/phpmyadmin
-        container_name: inventory_manager_phpmyadmin
-        restart: unless-stopped
-        depends_on:
-            - inventory_manager_db
-        ports:
-            - "9083:80"
-        environment:
-            PMA_HOST: inventory_manager_db
-            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            - ./docker/nginx:/etc/nginx/conf.d
         networks:
             - inventory_manager_network
 
