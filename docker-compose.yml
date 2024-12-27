@@ -6,7 +6,7 @@ services:
                 user: naser
                 uid: 1000
             context: . # path of Dockerfile
-            dockerfile: docker/Dockerfile.prod
+            dockerfile: docker/Dockerfile.local
 
         image: inventory_manager
         container_name: inventory_manager
