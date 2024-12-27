@@ -3,18 +3,21 @@
 namespace App\Http\Controllers\Purchase;
 
 use App\Http\Controllers\Controller;
+use App\Http\Enums\PurchaseInboundStatusEnum;
 use App\Http\Requests\Purchase\PurchaseInboundStoreRequest;
 use App\Http\Services\Purchase\PurchaseInboundService;
 use App\Http\Services\setting\ItemService;
 use App\Http\Services\setting\LocationService;
 use App\Http\Services\setting\VendorService;
 use App\Http\Traits\HelperFunctionTrait;
+use App\Models\PurchaseInboundStatus;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
@@ -30,7 +33,9 @@ class PurchaseInboundController extends Controller
     {
         $purchase_inbounds = $purchaseInboundService->index();
 
-        return view('pages.purchase_inbound.index', compact('purchase_inbounds'));
+        $purchase_inbound_status_enum = PurchaseInboundStatusEnum::getAllStatus();
+
+        return view('pages.purchase_inbound.index', compact('purchase_inbounds', 'purchase_inbound_status_enum'));
     }
 
     /**
@@ -78,17 +83,49 @@ class PurchaseInboundController extends Controller
 
             DB::beginTransaction();
             try {
-                $purchase_inbound = $purchaseInboundService->store($validateData, $purchase_inbound_number);
+                $user_id = Auth::id();
+                $purchase_inbound = $purchaseInboundService->store($validateData, $purchase_inbound_number, $user_id);
                 $purchaseInboundService->storePurchaseInboundItems($validateData['purchase_inbound_items'], $purchase_inbound->id);
-                $purchaseInboundService->inbound_to_stock($validateData);
+                $purchaseInboundService->storePurchaseInboundStatus($purchase_inbound->id, $user_id);
 
                 DB::commit();
-                return redirect()->route('purchase_inbound.index')->with('success', 'Inbound Registered');
             } catch (Exception $e) {
                 DB::rollback();
+                return redirect()->back()->with('error', 'Process failed try again!!');
             }
         }
-        return redirect()->back()->with('error', 'Process failed try again!!');
+        return redirect()->route('purchase_inbound.index')->with('success', 'Inbound Registered');
+    }
+
+    public function approve($id, PurchaseInboundService $purchaseInboundService)
+    {
+        $purchase_inbound = $purchaseInboundService->findById($id);
+
+        if ($purchase_inbound == null) {
+            return redirect()->back()->with('error', 'Purchase Inbound Not Found');
+        }
+
+        DB::beginTransaction();
+        try {
+            $purchaseInboundService->inbound_to_stock($purchase_inbound);
+            $purchaseInboundService->approvePurchaseInboundStatus($id);
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with('error', 'Failed to Approve');
+        }
+        return redirect()->back()->with('success', 'Inbound Approved');
+    }
+
+    public function cancel($id, PurchaseInboundService $purchaseInboundService)
+    {
+        $purchase_inbound = $purchaseInboundService->findById($id);
+        if ($purchase_inbound) {
+            $purchaseInboundService->cancelPurchaseInboundStatus($id);
+            return redirect()->back()->with('success', 'Inbound Cancelled');
+        } else {
+            return redirect()->back()->with('error', 'No Purchase Inbound Found');
+        }
     }
 
     public function show($id, PurchaseInboundService $purchaseInboundService)

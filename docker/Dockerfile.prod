@@ -41,7 +41,7 @@ RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist
 COPY --chown=composer . .
 
 # Run install scripts
-RUN composer install --no-dev --prefer-dist
+RUN composer install --prefer-dist
 
 # FPM server container
 FROM php:8.3-fpm-alpine AS fpm_server

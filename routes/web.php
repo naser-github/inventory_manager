@@ -49,6 +49,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/create', [PurchaseInboundController::class, 'create'])->name('purchase_inbound.create');
         Route::post('/store', [PurchaseInboundController::class, 'store'])->name('purchase_inbound.store');
 
+        Route::patch('/approve/{id}', [PurchaseInboundController::class, 'approve'])->name('purchase_inbound.approve');
+        Route::patch('/cancel/{id}', [PurchaseInboundController::class, 'cancel'])->name('purchase_inbound.cancel');
+
         Route::get('/show/{id}', [PurchaseInboundController::class, 'show'])->name('purchase_inbound.show');
 
         Route::delete('/delete/{id}', [PurchaseInboundController::class, 'destroy'])->name('purchase_inbound.destroy');

@@ -2,12 +2,15 @@
 
 namespace App\Http\Services\Purchase;
 
+use App\Http\Enums\PurchaseInboundStatusEnum;
 use App\Http\Traits\HelperFunctionTrait;
 use App\Models\Consumption;
 use App\Models\PurchaseInbound;
 use App\Models\PurchaseInboundItem;
+use App\Models\PurchaseInboundStatus;
 use App\Models\Setting\Item;
 use App\Models\Stock;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,7 +23,7 @@ class PurchaseInboundService
      */
     public function index(): Collection|array
     {
-        return PurchaseInbound::query()->with('vendor')->orderBy('id', 'DESC')->get();
+        return PurchaseInbound::query()->with('purchaseInboundStatus','vendor')->orderBy('id', 'DESC')->get();
     }
 
     /**
@@ -28,7 +31,7 @@ class PurchaseInboundService
      * @param $purchase_inbound_number
      * @return PurchaseInbound
      */
-    public function store($payload, $purchase_inbound_number): PurchaseInbound
+    public function store($payload, $purchase_inbound_number, $user_id): PurchaseInbound
     {
         $purchase_inbound = new PurchaseInbound();
         $purchase_inbound->raised_date = date('Y-m-d', strtotime($payload['raised_date']));
@@ -39,7 +42,7 @@ class PurchaseInboundService
         $purchase_inbound->grand_total = $payload['total'];
 
         $purchase_inbound->location_id = $payload['location_id'];
-        $purchase_inbound->user_id = Auth::id();
+        $purchase_inbound->user_id = $user_id;
         $purchase_inbound->vendor_id = $payload['vendor_id'];
         $purchase_inbound->save();
 
@@ -68,31 +71,55 @@ class PurchaseInboundService
         }
     }
 
+    public function storePurchaseInboundStatus($purchase_inbound_id, $user_id): void
+    {
+        $purchase_inbound_status = new PurchaseInboundStatus();
+        $purchase_inbound_status->purchase_inbound_id = $purchase_inbound_id;
+        $purchase_inbound_status->status = PurchaseInboundStatusEnum::PENDING;
+        $purchase_inbound_status->user_id = $user_id;
+        $purchase_inbound_status->save();
+    }
+
+    public function approvePurchaseInboundStatus($purchase_inbound_id): void
+    {
+        $purchase_inbound_status = $this->findPurchaseInboundStatusById($purchase_inbound_id);
+        $purchase_inbound_status->status = PurchaseInboundStatusEnum::APPROVED;
+        $purchase_inbound_status->save();
+    }
+
+    public function cancelPurchaseInboundStatus($purchase_inbound_id): void
+    {
+        $purchase_inbound_status = $this->findPurchaseInboundStatusById($purchase_inbound_id);
+        $purchase_inbound_status->status = PurchaseInboundStatusEnum::CANCELLED;
+        $purchase_inbound_status->save();
+    }
+
     /**
-     * @param $payload
+     * @param $purchase_inbound
      * @return void
      */
-    public function inbound_to_stock($payload): void
+    public function inbound_to_stock($purchase_inbound): void
     {
-        $inbound_items = $payload['purchase_inbound_items'];
-        foreach ($inbound_items as $item) {
+        $purchase_inbound_items = PurchaseInboundItem::query()->where('purchase_inbound_id', $purchase_inbound->id)->get();
+
+        foreach ($purchase_inbound_items as $item) {
 
             $item_exist = Stock::query()
-                ->where('location_id', $payload['location_id'])
-                ->where('item_id', $item['item_id'])
+                ->where('location_id', $purchase_inbound->location_id)
+                ->where('item_id', $item->item_id)
                 ->first();
 
             if ($item_exist) {
-                $new_unit_price = $this->average_price_calculation($item_exist->quantity, $item_exist->unit_price, $item['quantity'], $item['unit_price']);
-                $item_exist->quantity += $item['quantity'];
+                $new_unit_price = $this->average_price_calculation($item_exist->quantity, $item_exist->unit_price, $item->quantity, $item->unit_price);
+                $item_exist->quantity += $item->quantity;
                 $item_exist->unit_price = $new_unit_price;
                 $item_exist->save();
             } else {
                 $inbound_to_stock = new Stock();
-                $inbound_to_stock->location_id = $payload['location_id'];
-                $inbound_to_stock->item_id = $item['item_id'];
-                $inbound_to_stock->quantity = $item['quantity'];
-                $inbound_to_stock->unit_price = $item['unit_price'];
+                $inbound_to_stock->location_id = $purchase_inbound->location_id;
+                $inbound_to_stock->item_id = $item->item_id;
+                $inbound_to_stock->quantity = $item->quantity;
+                $inbound_to_stock->unit_price = $item->unit_price;
                 $inbound_to_stock->save();
             }
         }
@@ -130,6 +157,13 @@ class PurchaseInboundService
         return PurchaseInbound::query()
             ->with(['purchaseInboundItems.item', 'vendor'])
             ->where('id', $payload)
+            ->first();
+    }
+
+    public function findPurchaseInboundStatusById($id): object|null
+    {
+        return PurchaseInboundStatus::query()
+            ->where('purchase_inbound_id', $id)
             ->first();
     }
 
