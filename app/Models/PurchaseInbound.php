@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class PurchaseInbound extends Model
 {
@@ -15,6 +16,11 @@ class PurchaseInbound extends Model
     public function purchaseInboundItems(): HasMany
     {
         return $this->hasMany(PurchaseInboundItem::class, 'purchase_inbound_id', 'id');
+    }
+
+    public function purchaseInboundStatus(): HasOne
+    {
+        return $this->hasOne(PurchaseInboundStatus::class, 'purchase_inbound_id', 'id');
     }
 
     public function vendor(): BelongsTo

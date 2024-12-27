@@ -71,6 +71,7 @@
                     <th class="min-w-125px">Reference Number</th>
                     <th class="min-w-125px">Inbound Date</th>
                     <th class="min-w-125px">Vendor</th>
+                    <th class="min-w-125px">Status</th>
                     <th class="text-end min-w-100px">Actions</th>
                 </tr>
                 <!--end::Table row-->
@@ -94,7 +95,19 @@
                         </td>
 
                         <td>
-                            {{$item->vendor->name}}
+                            {{$item->vendor?->name}}
+                        </td>
+
+                        <td>
+                            <span class="badge badge-light-{{ $item->purchaseInboundStatus?->status == \App\Http\Enums\PurchaseInboundStatusEnum::PENDING ? 'warning' : ($item->purchaseInboundStatus?->status == \App\Http\Enums\PurchaseInboundStatusEnum::APPROVED ? 'success' : 'danger') }}">
+                                @if($item->purchaseInboundStatus?->status == \App\Http\Enums\PurchaseInboundStatusEnum::PENDING)
+                                    Pending
+                                @elseif($item->purchaseInboundStatus?->status == \App\Http\Enums\PurchaseInboundStatusEnum::APPROVED)
+                                    Active
+                                @elseif($item->purchaseInboundStatus?->status == \App\Http\Enums\PurchaseInboundStatusEnum::CANCELLED)
+                                    Cancelled
+                                @endif
+                            </span>
                         </td>
 
                         <!--begin::Action=-->
@@ -121,6 +134,34 @@
                                             <i class="fa-solid fa-eye me-2"></i> View
                                         </a>
                                         <!--end::Menu item-->
+
+
+                                        @if(\App\Http\Enums\PurchaseInboundStatusEnum::isPending($item->purchaseInboundStatus?->status))
+                                            <!--begin::Menu item-->
+                                            <form role="form" method="POST"
+                                                  action="{{ route('purchase_inbound.approve', $item->id) }}">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button type="submit"
+                                                        class="btn btn-sm btn-white btn-active-info dropdown-item">
+                                                    <i class="fa-solid fa-check me-2"></i> Approve
+                                                </button>
+                                            </form>
+                                            <!--end::Menu item-->
+
+                                            <!--begin::Menu item-->
+                                            <form role="form" method="POST"
+                                                  action="{{ route('purchase_inbound.cancel', $item->id) }}">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button type="submit"
+                                                        class="btn btn-sm btn-white btn-active-info dropdown-item">
+                                                    <i class="fa-solid fa-ban me-2"></i> Cancel
+                                                </button>
+                                            </form>
+                                            <!--end::Menu item-->
+                                        @endif
+
 
                                         <!--begin::Menu item-->
                                         <form role="form" method="POST"
@@ -167,7 +208,8 @@
             $('#searchInput').on('keyup', function () {
                 table.search(this.value).draw();
             });
-        })q
+        })
+        q
 
     </script>
     <!--End::Datatable-->
