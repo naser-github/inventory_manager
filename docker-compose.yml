@@ -10,6 +10,8 @@ services:
             - "10101:80"
         restart: unless-stopped # automatically restarts the server if stops
         working_dir: /var/www # [/var/www] is the standard though you can use any name
+        environment:
+            VIRTUAL_HOST: inventory-manager.freeddns.org
         volumes:
             - ./:/var/www
         networks:
