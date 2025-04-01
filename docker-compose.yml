@@ -2,20 +2,16 @@ services:
     #   PHP Server
     inventory_manager:
         build:
-            args:
-                user: naser
-                uid: 1000
             context: . # path of Dockerfile
             dockerfile: docker/Dockerfile.prod
-
         image: inventory_manager
         container_name: inventory_manager
-        restart: unless-stopped # automatically restarts the MySQL server if stops
-
+        ports:
+            -   "10101:80"
+        restart: unless-stopped # automatically restarts the server if stops
         working_dir: /var/www # [/var/www] is the standard though you can use any name
         volumes:
             - ./:/var/www
-
         networks:
             - prometheus-network
 
